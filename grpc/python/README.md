@@ -1,5 +1,7 @@
 # dataPARC.Store Python gRPC Client
 
+An example python client that uses protobuf files to connect to the gRPC endpoints on the dataPARC.Store historian.
+
 ## Prerequisites
 
 See [https://grpc.io/docs/languages/python/](https://grpc.io/docs/languages/python/) for more info.
