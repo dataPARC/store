@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['text_0',['text',['../d4/dce/a00337.html#a50c9ac06ac23a420f22f9d5df07b2c43a9dffbf69ffba8bc38bc4e01abf4b1675',1,'dataPARC.Store.EnterpriseCore.Entities.Text'],['../d2/d45/a00342.html#af7a4d59a5d32c779e2581b55c9e42b5fa9dffbf69ffba8bc38bc4e01abf4b1675',1,'dataPARC.Store.EnterpriseCore.History.Enums.Text']]]
+  ['raw_0',['Raw',['../da/de3/a00856.html#af7a4d59a5d32c779e2581b55c9e42b5fa65e65c8ab0d8609ce12fc68a03cb8e00',1,'dataPARC::Store::EnterpriseCore::History::Enums']]],
+  ['readrawfailed_1',['ReadRawFailed',['../da/de3/a00856.html#aa09ba4f5b0b19a9cd93d88df53829b62a6363ea92d3637e1f8c71e80df4f99cb7',1,'dataPARC::Store::EnterpriseCore::History::Enums']]],
+  ['regular_2',['Regular',['../db/deb/a00853.html#a3f48fd9ff6ee2d0d90f0d377d1cf0519ad2203cb1237cb6460cbad94564e39345',1,'dataPARC::Store::EnterpriseCore::Enums']]]
 ];

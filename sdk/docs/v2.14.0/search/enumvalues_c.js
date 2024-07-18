@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['raw_0',['Raw',['../d2/d45/a00342.html#af7a4d59a5d32c779e2581b55c9e42b5fa65e65c8ab0d8609ce12fc68a03cb8e00',1,'dataPARC::Store::EnterpriseCore::History::Enums']]],
-  ['readrawfailed_1',['ReadRawFailed',['../d2/d45/a00342.html#aa09ba4f5b0b19a9cd93d88df53829b62a6363ea92d3637e1f8c71e80df4f99cb7',1,'dataPARC::Store::EnterpriseCore::History::Enums']]],
-  ['regular_2',['Regular',['../d0/d01/a00339.html#a3f48fd9ff6ee2d0d90f0d377d1cf0519ad2203cb1237cb6460cbad94564e39345',1,'dataPARC::Store::EnterpriseCore::Enums']]]
+  ['partiallysuccessful_0',['PartiallySuccessful',['../de/d37/a00849.html#ab3e7858f0e4e8ecabfde9f2b6da22cfda49c830461486fd4acc73957f75936b88',1,'dataPARC::Store::EnterpriseCore::DataPoints::Entities']]],
+  ['processraw_1',['ProcessRaw',['../da/de3/a00856.html#adad89dd2df0dd5e57574f44be92f11a8ae2ac53ed9978059fc43c73e7387f6a40',1,'dataPARC::Store::EnterpriseCore::History::Enums']]]
 ];

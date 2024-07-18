@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['clientfactory_0',['ClientFactory',['../d9/d0a/a00390.html',1,'dataPARC::Store::SDK']]],
-  ['configurationclient_1',['ConfigurationClient',['../d4/d6d/a00402.html',1,'dataPARC::Store::SDK']]]
+  ['aggregateconfig_0',['AggregateConfig',['../d1/d03/a01653.html',1,'dataPARC::TimeSeries::Calculations::Aggregation']]]
 ];

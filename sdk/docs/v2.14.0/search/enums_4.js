@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['readattimestatus_0',['ReadAtTimeStatus',['../d2/d45/a00342.html#a83acc9430275419d61d57948b8da8fc8',1,'dataPARC::Store::EnterpriseCore::History::Enums']]],
-  ['readcountstatus_1',['ReadCountStatus',['../d2/d45/a00342.html#acce19b0f0acdff011ca258fce1496c4d',1,'dataPARC::Store::EnterpriseCore::History::Enums']]],
-  ['readcurrentvaluestatus_2',['ReadCurrentValueStatus',['../d2/d45/a00342.html#a76073fbaceb2bd3bdaa19ecaeb02bf04',1,'dataPARC::Store::EnterpriseCore::History::Enums']]],
-  ['readprocessedstatus_3',['ReadProcessedStatus',['../d2/d45/a00342.html#aa09ba4f5b0b19a9cd93d88df53829b62',1,'dataPARC::Store::EnterpriseCore::History::Enums']]],
-  ['readrawstatus_4',['ReadRawStatus',['../d2/d45/a00342.html#a2cc4245e659a1e5d7caf03f2bc120bff',1,'dataPARC::Store::EnterpriseCore::History::Enums']]],
-  ['receiveddatastatus_5',['ReceivedDataStatus',['../df/d91/a00335.html#ab3e7858f0e4e8ecabfde9f2b6da22cfd',1,'dataPARC::Store::EnterpriseCore::DataPoints::Entities']]]
+  ['processedsource_0',['ProcessedSource',['../da/de3/a00856.html#adad89dd2df0dd5e57574f44be92f11a8',1,'dataPARC::Store::EnterpriseCore::History::Enums']]],
+  ['publishingbuffermode_1',['PublishingBufferMode',['../dd/dd5/a00861.html#a2d8ca70750cff148da8ce867d2542abd',1,'dataPARC::Store::EnterpriseCore::Publishing::Inputs']]],
+  ['publishingdatamode_2',['PublishingDataMode',['../dd/dd5/a00861.html#af883aa646e00aa3baf6aff5a555a1bdb',1,'dataPARC::Store::EnterpriseCore::Publishing::Inputs']]]
 ];

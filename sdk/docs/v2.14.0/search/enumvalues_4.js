@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['guid_0',['guid',['../d4/dce/a00337.html#aa201c7b11fe0ddbe1ffb713fe6371cdeac195f641dd597766b98e4ffa9e2f0e75',1,'dataPARC.Store.EnterpriseCore.Entities.Guid'],['../d4/dce/a00337.html#a17bce60e6ac3f9539f37ec60cf39b495ac195f641dd597766b98e4ffa9e2f0e75',1,'dataPARC.Store.EnterpriseCore.Entities.Guid'],['../d4/dce/a00337.html#a4348bba9560ffe861c248341cb6c25f5ac195f641dd597766b98e4ffa9e2f0e75',1,'dataPARC.Store.EnterpriseCore.Entities.Guid'],['../d4/dce/a00337.html#a7b32dd81adcfdd32b749e1e6182d7aa2ac195f641dd597766b98e4ffa9e2f0e75',1,'dataPARC.Store.EnterpriseCore.Entities.Guid']]]
+  ['error_0',['error',['../de/d37/a00849.html#ab3e7858f0e4e8ecabfde9f2b6da22cfda902b0d55fddef6f8d651fe1035b7d4bd',1,'dataPARC.Store.EnterpriseCore.DataPoints.Entities.Error'],['../da/de3/a00856.html#a76073fbaceb2bd3bdaa19ecaeb02bf04a902b0d55fddef6f8d651fe1035b7d4bd',1,'dataPARC.Store.EnterpriseCore.History.Enums.Error']]],
+  ['exception_1',['Exception',['../db/deb/a00853.html#a3f48fd9ff6ee2d0d90f0d377d1cf0519ab0d4998a26f5b5742ad38c4af8817e32',1,'dataPARC::Store::EnterpriseCore::Enums']]]
 ];

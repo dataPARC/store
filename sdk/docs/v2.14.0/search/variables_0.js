@@ -1,31 +1,5 @@
 var searchData=
 [
-  ['tagdpbooleanarrays_0',['TagDpBooleanArrays',['../d3/dee/a00774.html#afab047e83ed3f83dbf275070c18f44f4',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpbooleans_1',['TagDpBooleans',['../d3/dee/a00774.html#aaf9b51898179df454badabe194f2341a',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpbytearrays_2',['TagDpByteArrays',['../d3/dee/a00774.html#a6913ca2ca16af82967c19cf78b834f2f',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpbytes_3',['TagDpBytes',['../d3/dee/a00774.html#a3a876c9322c048891d4a9e3c0173d162',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpdatetimearrays_4',['TagDpDateTimeArrays',['../d3/dee/a00774.html#acd86692467903260a88babaa64b5bdcd',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpdatetimes_5',['TagDpDateTimes',['../d3/dee/a00774.html#a288645b7ce021482ae6fdb6627b4f290',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpdecimalarrays_6',['TagDpDecimalArrays',['../d3/dee/a00774.html#a77309817a4431026c59457a04838c7db',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpdecimals_7',['TagDpDecimals',['../d3/dee/a00774.html#a5ff38b3a472ad363117d93f36ad37868',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpdoublearrays_8',['TagDpDoubleArrays',['../d3/dee/a00774.html#aaac4caaa62cc8d7d4b3d0be370eff244',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpdoubles_9',['TagDpDoubles',['../d3/dee/a00774.html#aa70858affe896f7bd972f69cbfff2d67',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpint16arrays_10',['TagDpInt16Arrays',['../d3/dee/a00774.html#a51b431effb7cb69c465e2d2e6cadbed9',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpint16s_11',['TagDpInt16s',['../d3/dee/a00774.html#a58925bdf97a45148e939ea45e4679ce1',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpint32arrays_12',['TagDpInt32Arrays',['../d3/dee/a00774.html#a74c7d4413a122e4b87897233cc40c9be',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpint32s_13',['TagDpInt32s',['../d3/dee/a00774.html#aa38daa05952ad5670f1f6df27b6d63cf',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpint64arrays_14',['TagDpInt64Arrays',['../d3/dee/a00774.html#a505478bdc9a3fda42f3a5f3fe41f1953',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpint64s_15',['TagDpInt64s',['../d3/dee/a00774.html#aaeeb13e0d1c7f7f76c2bf18504afe9d8',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpsbytearrays_16',['TagDpSByteArrays',['../d3/dee/a00774.html#acfdf3291be97323724334f881df48321',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpsbytes_17',['TagDpSBytes',['../d3/dee/a00774.html#ac0226f6a0bd9afb1b5bf546bf2e6a9d0',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpsinglearrays_18',['TagDpSingleArrays',['../d3/dee/a00774.html#a283f9a56b56008e61ac1c94a4c0c3ebc',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpsingles_19',['TagDpSingles',['../d3/dee/a00774.html#a24a49371efa2b11fb0beb2e01b371bf6',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpstringarrays_20',['TagDpStringArrays',['../d3/dee/a00774.html#aedb16491a0dba23a8cd9b2b40ecb0af1',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpstrings_21',['TagDpStrings',['../d3/dee/a00774.html#aef66bc7466c48aeb21c7cf8b14f8bdbe',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpuint16arrays_22',['TagDpUInt16Arrays',['../d3/dee/a00774.html#a8512ae69501c5a973fe546fe69d2876e',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpuint16s_23',['TagDpUInt16s',['../d3/dee/a00774.html#ac498300d6cb4033bc7f88142de2985de',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpuint32arrays_24',['TagDpUInt32Arrays',['../d3/dee/a00774.html#a58468c3c9133b76d9f30c803e6a9ba1e',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpuint32s_25',['TagDpUInt32s',['../d3/dee/a00774.html#ad4275d332de3c9d30fb05a8107af32a5',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpuint64arrays_26',['TagDpUInt64Arrays',['../d3/dee/a00774.html#a60c1255b657d858b01470d1b1a755b16',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]],
-  ['tagdpuint64s_27',['TagDpUInt64s',['../d3/dee/a00774.html#a20112318a7510238a84153764303a1d4',1,'dataPARC::Store::EnterpriseCore::TagDataPoints::Sets::TagDataPointSet']]]
+  ['datapoint_0',['DataPoint',['../dd/d80/a01893.html#a5b46c026645bc115f3a152ff1b7e64e1',1,'dataPARC::TimeSeries::Calculations::Aggregation::RegionProcessing::Region']]],
+  ['defaultalignmentorigin_1',['DefaultAlignmentOrigin',['../d1/d03/a01653.html#ae2f85807e9af586661b2f51df8df5b11',1,'dataPARC::TimeSeries::Calculations::Aggregation::AggregateConfig']]]
 ];

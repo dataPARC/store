@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['datanotdeletedduetoerror_0',['DataNotDeletedDueToError',['../df/d91/a00335.html#a6972a509393db3cf11753a95537874e6a9d3f8fc0b111ec6b1dc0e0d6f7b621ed',1,'dataPARC::Store::EnterpriseCore::DataPoints::Entities']]],
-  ['deleteddata_1',['DeletedData',['../df/d91/a00335.html#a6972a509393db3cf11753a95537874e6a3660e7d01abcabc29eeedb9dd6003314',1,'dataPARC::Store::EnterpriseCore::DataPoints::Entities']]],
-  ['digitaltext_2',['DigitalText',['../d2/d45/a00342.html#af7a4d59a5d32c779e2581b55c9e42b5fa1d3ebe78f935e6ca9fe134123fbccd64',1,'dataPARC::Store::EnterpriseCore::History::Enums']]],
-  ['duplicatetag_3',['duplicatetag',['../d2/d45/a00342.html#aace0add520aea3891554e1fc8c675bc8a05a96fcce40edb2aa25e8e447c6acf1a',1,'dataPARC.Store.EnterpriseCore.History.Enums.DuplicateTag'],['../d2/d45/a00342.html#a83acc9430275419d61d57948b8da8fc8a05a96fcce40edb2aa25e8e447c6acf1a',1,'dataPARC.Store.EnterpriseCore.History.Enums.DuplicateTag'],['../d2/d45/a00342.html#aa09ba4f5b0b19a9cd93d88df53829b62a05a96fcce40edb2aa25e8e447c6acf1a',1,'dataPARC.Store.EnterpriseCore.History.Enums.DuplicateTag'],['../d2/d45/a00342.html#a2cc4245e659a1e5d7caf03f2bc120bffa05a96fcce40edb2aa25e8e447c6acf1a',1,'dataPARC.Store.EnterpriseCore.History.Enums.DuplicateTag'],['../d2/daf/a00346.html#af273318f1bc0da83172cef80565aed57a05a96fcce40edb2aa25e8e447c6acf1a',1,'dataPARC.Store.EnterpriseCore.Publishing.Entities.DuplicateTag']]]
+  ['backwards_0',['Backwards',['../d2/dac/a00876.html#ab5808a92b15d87711197cfd23153d285a9d1104e419414f4c268be7211fb8fc4a',1,'dataPARC::TimeSeries::Core::Enums']]]
 ];

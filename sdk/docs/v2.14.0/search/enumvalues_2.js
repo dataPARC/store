@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['error_0',['error',['../df/d91/a00335.html#ab3e7858f0e4e8ecabfde9f2b6da22cfda902b0d55fddef6f8d651fe1035b7d4bd',1,'dataPARC.Store.EnterpriseCore.DataPoints.Entities.Error'],['../d2/d45/a00342.html#a76073fbaceb2bd3bdaa19ecaeb02bf04a902b0d55fddef6f8d651fe1035b7d4bd',1,'dataPARC.Store.EnterpriseCore.History.Enums.Error']]],
-  ['exception_1',['Exception',['../d0/d01/a00339.html#a3f48fd9ff6ee2d0d90f0d377d1cf0519ab0d4998a26f5b5742ad38c4af8817e32',1,'dataPARC::Store::EnterpriseCore::Enums']]]
+  ['continuous_0',['Continuous',['../d2/dac/a00876.html#a4bbb563c9dd333f9b810b069d3a225faa535863a82f163709557e59e2eb8139a7',1,'dataPARC::TimeSeries::Core::Enums']]]
 ];

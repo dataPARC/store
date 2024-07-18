@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['historianshuttingdown_0',['HistorianShuttingDown',['../df/d91/a00335.html#a6972a509393db3cf11753a95537874e6a3a956e739417620041807e623807d4d0',1,'dataPARC::Store::EnterpriseCore::DataPoints::Entities']]],
-  ['historizedonly_1',['HistorizedOnly',['../d1/dc6/a00347.html#af883aa646e00aa3baf6aff5a555a1bdba3d761d64026f765efb14a5f037f7e02c',1,'dataPARC::Store::EnterpriseCore::Publishing::Inputs']]]
+  ['forwards_0',['Forwards',['../d2/dac/a00876.html#ab5808a92b15d87711197cfd23153d285a1e411b48c18c85a91ad46b53ebb24d6a',1,'dataPARC::TimeSeries::Core::Enums']]],
+  ['fullyqualifiedinterfacename_1',['fullyqualifiedinterfacename',['../df/d4c/a00851.html#a17bce60e6ac3f9539f37ec60cf39b495a9fb5fb8a324d88bd647ed76e0d016b75',1,'dataPARC.Store.EnterpriseCore.Entities.FullyQualifiedInterfaceName'],['../df/d4c/a00851.html#a4348bba9560ffe861c248341cb6c25f5a9fb5fb8a324d88bd647ed76e0d016b75',1,'dataPARC.Store.EnterpriseCore.Entities.FullyQualifiedInterfaceName']]],
+  ['fullyqualifiedtagname_2',['FullyQualifiedTagName',['../df/d4c/a00851.html#a7b32dd81adcfdd32b749e1e6182d7aa2a3f42e12f3b250f8faa3a4a3bc44c2341',1,'dataPARC::Store::EnterpriseCore::Entities']]]
 ];

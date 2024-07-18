@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['processedsource_0',['ProcessedSource',['../d2/d45/a00342.html#adad89dd2df0dd5e57574f44be92f11a8',1,'dataPARC::Store::EnterpriseCore::History::Enums']]],
-  ['publishingbuffermode_1',['PublishingBufferMode',['../d1/dc6/a00347.html#a2d8ca70750cff148da8ce867d2542abd',1,'dataPARC::Store::EnterpriseCore::Publishing::Inputs']]],
-  ['publishingdatamode_2',['PublishingDataMode',['../d1/dc6/a00347.html#af883aa646e00aa3baf6aff5a555a1bdb',1,'dataPARC::Store::EnterpriseCore::Publishing::Inputs']]]
+  ['inputtype_0',['InputType',['../df/d4c/a00851.html#a50c9ac06ac23a420f22f9d5df07b2c43',1,'dataPARC::Store::EnterpriseCore::Entities']]],
+  ['interfacegroupqueryidentifierenum_1',['InterfaceGroupQueryIdentifierEnum',['../df/d4c/a00851.html#aa201c7b11fe0ddbe1ffb713fe6371cde',1,'dataPARC::Store::EnterpriseCore::Entities']]],
+  ['interfacequeryidentifierenum_2',['InterfaceQueryIdentifierEnum',['../df/d4c/a00851.html#a17bce60e6ac3f9539f37ec60cf39b495',1,'dataPARC::Store::EnterpriseCore::Entities']]],
+  ['interfacesetqueryidentifierenum_3',['InterfaceSetQueryIdentifierEnum',['../df/d4c/a00851.html#a4348bba9560ffe861c248341cb6c25f5',1,'dataPARC::Store::EnterpriseCore::Entities']]],
+  ['interpolatetype_4',['InterpolateType',['../d2/dac/a00876.html#a4bbb563c9dd333f9b810b069d3a225fa',1,'dataPARC::TimeSeries::Core::Enums']]]
 ];
