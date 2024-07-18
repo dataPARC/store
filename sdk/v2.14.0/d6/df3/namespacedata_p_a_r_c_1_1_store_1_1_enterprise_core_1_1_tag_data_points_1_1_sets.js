@@ -1,4 +1,0 @@
-var namespacedata_p_a_r_c_1_1_store_1_1_enterprise_core_1_1_tag_data_points_1_1_sets =
-[
-    [ "TagDataPointSet", "d5/df6/classdata_p_a_r_c_1_1_store_1_1_enterprise_core_1_1_tag_data_points_1_1_sets_1_1_tag_data_point_set.html", "d5/df6/classdata_p_a_r_c_1_1_store_1_1_enterprise_core_1_1_tag_data_points_1_1_sets_1_1_tag_data_point_set" ]
-];

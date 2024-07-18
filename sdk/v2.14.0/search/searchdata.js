@@ -8,7 +8,7 @@ var indexSectionsWithContent =
   5: "dgiprst",
   6: "adefghilmnpqrstu",
   7: "abcdefghimnopqrstuvw",
-  8: "ds"
+  8: "dirs"
 };
 
 var indexSectionNames =
