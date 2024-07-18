@@ -1,9 +1,10 @@
 ﻿syntax = "proto3";
 
 import "SDKTypes.proto";
-import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
 
 option csharp_namespace = "dataPARC.Store.FrontEnd.GRPCSupport.Service";
 
@@ -233,99 +234,32 @@ message ReadAtTimeParameters {
 // For reading and writing configurations and data.
 service SDKService {
   // Get all historian paths.
-  rpc GetHistorianPathConfigs(google.protobuf.Empty) returns (HistorianPathConfigList) {
-    option (google.api.http) = {
-      get : "/historian-paths"
-    };
-  }
-
+  rpc GetHistorianPathConfigs(google.protobuf.Empty) returns (HistorianPathConfigList);
   // Get all interface groups.
-  rpc GetInterfaceGroups(google.protobuf.Empty) returns (InterfaceGroupConfigList) {
-    option (google.api.http) = {
-      get : "/interface-groups"
-    };
-  }
-
+  rpc GetInterfaceGroups(google.protobuf.Empty) returns (InterfaceGroupConfigList);
   // Get all interfaces for an interface group.
-  rpc GetInterfaces(GetInterfacesParameters) returns (InterfaceConfigList) {
-    option (google.api.http) = {
-      get : "/interfaces"
-    };
-  }
-
+  rpc GetInterfaces(GetInterfacesParameters) returns (InterfaceConfigList);
   // Get a single interface.
-  rpc GetInterface(GetInterfaceParameters) returns (ReadInterfaceResult) {
-    option (google.api.http) = {
-      get : "/interface"
-    };
-  }
-
+  rpc GetInterface(GetInterfaceParameters) returns (ReadInterfaceResult);
   // Get all interface sets for an interface group.
-  rpc GetInterfaceSets(GetInterfaceSetsParameters) returns (ReadInterfaceSetListResult) {
-    option (google.api.http) = {
-      get : "/interface-sets"
-    };
-  }
-
+  rpc GetInterfaceSets(GetInterfaceSetsParameters) returns (ReadInterfaceSetListResult);
   // Get a single interface set.
-  rpc GetInterfaceSet(GetInterfaceSetParameters) returns (ReadInterfaceSetResult) {
-    option (google.api.http) = {
-      get : "/interface-set"
-    };
-  }
-
+  rpc GetInterfaceSet(GetInterfaceSetParameters) returns (ReadInterfaceSetResult);
   // Get a single tag.
-  rpc GetTag(GetTagParameters) returns (ReadTagResult) {
-    option (google.api.http) = {
-      get : "/tag"
-    };
-  }
-
+  rpc GetTag(GetTagParameters) returns (ReadTagResult);
   // Get all tags for an interface.
-  rpc GetTagsByInterface(InterfaceConfig) returns (ReadTagListResult) {
-    option (google.api.http) = {
-      get : "/tags-by-interface"
-    };
-  }
-
+  rpc GetTagsByInterface(InterfaceConfig) returns (ReadTagListResult);
   // Get all tags for an interface set.
-  rpc GetTagsByInterfaceSet(InterfaceSetConfig) returns (ReadTagListResult) {
-    option (google.api.http) = {
-      get : "/tags-by-interface-set"
-    };
-  }
+  rpc GetTagsByInterfaceSet(InterfaceSetConfig) returns (ReadTagListResult);
 
   // Create or update a historian path.
-  rpc WriteHistorianPathConfig(HistorianPathConfig) returns (HistorianPathConfig) {
-    option (google.api.http) = {
-      post : "/historian-path"
-      body : "*"
-    };
-  }
-
+  rpc WriteHistorianPathConfig(HistorianPathConfig) returns (HistorianPathConfig);
   // Create or update an interface group.
-  rpc WriteInterfaceGroupConfig(InterfaceGroupConfig) returns (InterfaceGroupConfig) {
-    option (google.api.http) = {
-      post : "/interface-group"
-      body : "*"
-    };
-  }
-
+  rpc WriteInterfaceGroupConfig(InterfaceGroupConfig) returns (InterfaceGroupConfig);
   // Create or update an interface.
-  rpc WriteInterface(InterfaceConfig) returns (InterfaceConfig) {
-    option (google.api.http) = {
-      post : "/interface"
-      body : "*"
-    };
-  }
-
+  rpc WriteInterface(InterfaceConfig) returns (InterfaceConfig);
   // Create or update a tag.
-  rpc WriteTag(TagConfig) returns (TagConfig) {
-    option (google.api.http) = {
-      post : "/tag"
-      body : "*"
-    };
-  }
+  rpc WriteTag(TagConfig) returns (TagConfig);
 
   // Create or update a stream of tags.
   // Note: Always use a separate thread to receive response.
@@ -334,99 +268,41 @@ service SDKService {
 
   // Stream current values for a collection of tags.
   rpc ReadCurrentValuesStream(ReadCurrentValuesParameters) returns (stream TagCurrentValues);
-
   // Read current values for a collection of tags.
   rpc ReadCurrentValues(ReadCurrentValuesParameters) returns (TagCurrentValues);
-
   // Read raw datapoints at specific timestamps for a single tag.
-  rpc ReadAtTime(ReadAtTimeParameters) returns (ReadAtTimeResult) {
-    option (google.api.http) = {
-      get : "/read-at-time"
-    };
-  }
-
+  rpc ReadAtTime(ReadAtTimeParameters) returns (ReadAtTimeResult);
   // Read a count of raw datapoints for a given time period for a single tag.
-  rpc ReadRawCount(ReadRawParameters) returns (ReadCountResult) {
-    option (google.api.http) = {
-      get : "/read-raw-count"
-    };
-  }
-
+  rpc ReadRawCount(ReadRawParameters) returns (ReadCountResult);
   // Stream raw datapoints for a given time period for a single tag.
-  rpc StreamRawData(StreamRawParameters) returns (stream StreamRawMessage) {
-    option (google.api.http) = {
-      get : "/read-raw"
-    };
-  };
-
+  rpc StreamRawData(StreamRawParameters) returns (stream StreamRawMessage);
   // Stream raw datapoints for given time periods for a collection of tags.
   rpc StreamRawBulkData(stream StreamRawParameters) returns (stream StreamRawMessage);
-
   // Stream a specified number of raw datapoints either forwards or backwards in time from a starting timestamp for a single tag.
-  rpc DirectionalStreamRawData(DirectionalStreamRawParameters) returns (stream StreamRawMessage) {
-    option (google.api.http) = {
-      get : "/read-raw-directional"
-    };
-  }
-
+  rpc DirectionalStreamRawData(DirectionalStreamRawParameters) returns (stream StreamRawMessage);
   // Read a count of aggregated datapoints for a given time period for a single tag.
-  rpc ReadProcessedCount(ReadProcessedParameters) returns (ReadCountResult) {
-    option (google.api.http) = {
-      get : "/read-processed-count"
-    };
-  }
-
+  rpc ReadProcessedCount(ReadProcessedParameters) returns (ReadCountResult);
   // Stream aggregated datapoints for a given time period for a single tag.
-  rpc StreamProcessedData(StreamProcessedParameters) returns (stream StreamProcessedMessage) {
-    option (google.api.http) = {
-      get : "/read-processed"
-    };
-  }
-
+  rpc StreamProcessedData(StreamProcessedParameters) returns (stream StreamProcessedMessage);
   // Stream aggregated datapoints for given time periods for a collection of tags.
   rpc StreamProcessedBulkData(stream StreamProcessedParameters) returns (stream StreamProcessedMessage);
-
   // Stream a specified number of aggregated datapoints either forwards or backwards in time from a starting timestamp for
   // a single tag.
-  rpc DirectionalStreamProcessedData(DirectionalStreamProcessedParameters) returns (stream StreamProcessedMessage) {
-    option (google.api.http) = {
-      get : "/read-processed-directional"
-    };
-  }
-
+  rpc DirectionalStreamProcessedData(DirectionalStreamProcessedParameters) returns (stream StreamProcessedMessage);
   // Read a count of aggregated datapoints for a preconfigured aggregate and a given time period for a single tag.
-  rpc ReadProcessedByConfigCount(ReadProcessedByConfigParameters) returns (ReadCountResult) {
-    option (google.api.http) = {
-      get : "/read-processed-by-config-count"
-    };
-  }
-
+  rpc ReadProcessedByConfigCount(ReadProcessedByConfigParameters) returns (ReadCountResult);
   // Stream aggregated datapoints for a preconfigured aggregate and a given time period for a single tag.
-  rpc StreamProcessedDataByConfig(StreamProcessedByConfigParameters) returns (stream StreamProcessedMessage) {
-    option (google.api.http) = {
-      get : "/read-processed-by-config"
-    };
-  }
-
+  rpc StreamProcessedDataByConfig(StreamProcessedByConfigParameters) returns (stream StreamProcessedMessage);
   // Stream aggregated datapoints for preconfigured aggregates and given time periods for a collection of tags.
   rpc StreamProcessedBulkDataByConfig(stream StreamProcessedByConfigParameters) returns (stream StreamProcessedMessage);
-
   // Stream a specified number of aggregated datapoints either forwards or backwards in time from a starting timestamp and a
   // preconfigured aggregate for a single tag.
   rpc DirectionalStreamProcessedDataByConfig(DirectionalStreamProcessedByConfigParameters)
-      returns (stream StreamProcessedMessage) {
-    option (google.api.http) = {
-      get : "/read-processed-by-config-directional"
-    };
-  }
+      returns (stream StreamProcessedMessage);
 
   // Write a collection of datapoints to history.
-  rpc WriteDataBulk(TagDataToHistorizeList) returns (WriteResult) {
-    option (google.api.http) = {
-      post : "/write"
-      body : "*"
-    };
-  }
+  rpc WriteDataBulk(TagDataToHistorizeList) returns (WriteResult);
 
+  // Get a health report from the server.
   rpc GetHealthReport(google.protobuf.Empty) returns (HealthReportResult);
 }

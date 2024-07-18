@@ -16,16 +16,12 @@ See [https://grpc.io/docs/languages/python/](https://grpc.io/docs/languages/pyth
 
    ```
    |- protos
-      |- google
-      |   |- api
-      |      |- annotations.proto
-      |      |- http.proto
       |- historian protobuf files...
       |- ...
       |- ...
    ```
 
-   `$ python -m grpc_tools.protoc -I ./protos -I ./protos/google/api --python_out=. --pyi_out=. --grpc_python_out=. ./protos/*.proto ./protos/google/api/*.proto`
+   `$ python -m grpc_tools.protoc -I ./protos --python_out=. --pyi_out=. --grpc_python_out=. ./protos/*.proto`
 
 3. Certificates
 
