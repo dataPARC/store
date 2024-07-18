@@ -4,7 +4,7 @@ A .NET library for creating clients for the dataPARC.Store historian
 
 ## Documentation
 
-See the [docs](https://dataparc.github.io/store-sdk-docs/v2.14.0/) for the API reference.
+See the [docs](https://dataparc.github.io/store/sdk/v2.14.0/) for the API reference.
 
 ## Prerequisites
 
