@@ -73,7 +73,7 @@ var isSame = readClient2 == clientFactory.ReadClient; // isSame = true
 
 ### Failover
 
-````cs
+```cs
 // Reading calls support failover to backup servers if the primary server becomes unavailable. The primary server is the first server specified in the array of servers. Reading calls include reading configurations, data, and publishing. Read calls will automatically try again on a backup server. Upon switching to a backup server, the client will wait about 3 minutes before trying to reconnect to the primary server. As many backup servers as needed can be added.
 
 var servers = new[]
@@ -84,11 +84,11 @@ var servers = new[]
 }
 
 await using var client = new ReadClient(servers, CertificateValidation.AcceptAllCertificates, avgFailoverMinutes: 3);
-````
+```
 
 ### Authorization
 
-````cs
+```cs
 // When creating clients, you are required to pass in an ICertificateValidation that is used to validate the server's certificate. This can be a custom validator as long as it implements ICertificateValidation.
 ICertificateValidation certVal = CertificateValidation.DefaultHttpClientHandlerValidator;
 await using var readClient = new ReadClient(hostname, port, certVal);
@@ -100,7 +100,7 @@ var token = AuthProviderFactory.StartDeviceCodeFlow("authority", "client_id", "s
 }
 IAuthProvider provider = AuthProviderFactory.CreateInMemoryTokenProvider(token);
 await using var writeClient = new WriteClient(hostname, port, certVal, provider);
-````
+```
 
 ### Connections
 
