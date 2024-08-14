@@ -1,0 +1,108 @@
+﻿syntax = "proto3";
+
+import "SDKTypes.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/duration.proto";
+
+option csharp_namespace = "dataPARC.Store.FrontEnd.GRPCSupport.Types";
+
+// A response indicating if a change tag publishing interval request succeeded.
+message ChangeTagPublishingIntervalResponse { bool value = 1; }
+
+// A response indicating if a stop tag publishing request succeeded.
+message StopTagPublishingResponse { bool value = 1; }
+
+// The result published when a tag has new values as defined by the subscription.
+message TagPublishingResult {
+  uint32 ClientTagId = 1;             // The Id for the subscription this result is for.
+  NullableUInt32 InitialResultId = 2; // The initial result Id if this result is the first result published.
+  TagIdentifier TagIdentifier = 3;    // The identifier of the tag this result is from.
+  DataPointCollection DataPoints = 4; // The datapoints being published.
+}
+
+// The result from a request to start publishing for a tag.
+message StartTagPublishingResult {
+  StartTagPublishingError Error = 1; // The error from the request.
+  uint32 ClientTagId = 2;            // The unique Id for the request.
+  TagIdentifier TagIdentifier = 3;   // The identifier of the tag this request is for.
+}
+
+// A union of possible publishing results.
+message TagPublishingResults {
+  oneof kind {
+    StartTagPublishingResult StartTagPublishingResult = 1;
+    TagPublishingResult TagPublishingResult = 2;
+    ChangeTagPublishingIntervalResponse ChangeTagPublishingIntervalResponse = 3;
+    StopTagPublishingResponse StopTagPublishingResponse = 4;
+  }
+}
+
+// A union of possible publishing requests.
+message TagPublishingRequests {
+  oneof kind {
+    StartTagPublishingRequest StartTagPublishingRequest = 1;
+    ChangeTagPublishingIntervalRequest ChangeTagPublishingIntervalRequest = 2;
+    StopTagPublishingRequest StopTagPublishingRequest = 3;
+  }
+}
+
+// Parameters for puiblishing datapoints for tags on an interval.
+message StartTagPublishingRequest {
+  uint32 ClientTagId = 1;     // The unique Id for this request (required). This should NOT collide with another active request.
+  uint32 InitialResultId = 2; // The Id to match against the initial result returned. This should be set to 1 if not being used.
+  TagQueryIdentifier TagIdentifier = 3; // The tag to publish datapoints for.
+
+  // The interval on which to publish new datapoints if any have been received by the historian.
+  google.protobuf.Duration PublishingInterval = 4;
+  NullableTimestamp PublishingStartTime = 5;     // The timestamp from which to start publishing datapoints from.
+  PublishingDataMode PublishingDataMode = 6;     // The mode specifying which datapoints to queue for publishing.
+  PublishingBufferMode PublishingBufferMode = 7; // The mode specifying which of the queued datapoints to publish.
+
+  // The digital text type to return if requesting publishing on a tag with a digital type mapping defined.
+  DigitalTextReturnType DigitalTextReturnType = 8;
+  NullableAggregateConfig AggregateConfig = 9; // Parameters for requesting aggregated data to be published.
+  NullableInt32 ArrayStartIndex = 10;          // The start index for publishing slices of array datapoints.
+
+  // The slice length for publishing slices of array datapoints. If greater than the length of the array, it will be truncated to
+  // avoid invalid indexes. If 0, the original array will be returned. If less than 0, the array will be sliced in reverse and
+  // include indexed values up to and including ArrayStartIndex.
+  NullableInt32 ArrayLength = 11;
+}
+
+// Parameters for changing the publishing interval of an active request.
+message ChangeTagPublishingIntervalRequest {
+  uint32 ClientTagId = 1;                          // The Id of the request to modify.
+  google.protobuf.Duration PublishingInterval = 2; // The new interval on which to publish datapoints.
+}
+
+// Parameters for stopping publishing for an active request.
+message StopTagPublishingRequest {
+  uint32 ClientTagId = 1; // The Id of the request to modify.
+}
+
+// Modes for publishing data to subscriptions.
+enum PublishingDataMode {
+  PublishingDataMode_Default = 0;        // The default mode defined in the server configuration.
+  PublishingDataMode_HistorizedOnly = 1; // Publish historized values only.
+  PublishingDataMode_All = 2;            // Publish current and historized values.
+}
+
+// Modes for buffering data to be published at the next event.
+enum PublishingBufferMode {
+  PublishingBufferMode_Default = 0;                  // The default mode defined in the server configuration.
+  PublishingBufferMode_LatestOnly = 1;               // Buffer only the latest value.
+  PublishingBufferMode_AllValuesSinceLastUpdate = 2; // Buffer all values since the last event was published.
+}
+
+// Error statuses for requests to start tag publishing.
+enum StartTagPublishingError {
+  StartTagPublishingError_None = 0;          // The request was successful.
+  StartTagPublishingError_UnknownTag = 10;   // The tag is unknown or inactive and cannot be suscribed to.
+  StartTagPublishingError_DuplicateTag = 20; // A duplicate tag exists in the same request.
+
+  // An unexpected error occured and the publishing request could not be fulfilled.
+  StartTagPublishingError_UnexpectedError = 10000;
+
+  // An invalid digital text configuration exists for a tag in the request.
+  StartTagPublishingError_InvalidDigitalTextConfiguration = 10001;
+}

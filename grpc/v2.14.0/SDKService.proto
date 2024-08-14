@@ -1,0 +1,308 @@
+﻿syntax = "proto3";
+
+import "SDKTypes.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+option csharp_namespace = "dataPARC.Store.FrontEnd.GRPCSupport.Service";
+
+// Parameters for reading all interfaces from an interface group.
+message GetInterfacesParameters { NullableString GroupName = 1; }
+
+// Parameters for reading a single interface.
+message GetInterfaceParameters {
+  NullableString InterfaceName = 1;
+  NullableString GroupName = 2;
+}
+
+// Parameters for reading all interface sets from an interface group.
+message GetInterfaceSetsParameters { NullableString GroupName = 1; }
+
+// Parameters for reading a single interface set.
+message GetInterfaceSetParameters {
+  NullableString InterfaceSetName = 1;
+  NullableString GroupName = 2;
+}
+
+// Parameters for reading a single tag.
+message GetTagParameters { TagQueryIdentifier TagIdentifier = 1; }
+
+// Parameters for reading the current value of a tag.
+message ReadCurrentValueParameters {
+  TagQueryIdentifier TagIdentifiers = 1; // The tag to read from (required).
+  NullableInt32 ArrayStartIndex = 2;     // The start index for reading slices of array datapoints.
+
+  // The slice length for reading slices of array datapoints. If greater than the length of the array, it will be truncated to
+  // avoid invalid indexes. If 0, the original array will be returned. If less than 0, the array will be sliced in reverse and
+  // include indexed values up to and including ArrayStartIndex.
+  NullableInt32 ArrayLength = 3;
+}
+
+// A collection of ReadCurrentValueParameters
+message ReadCurrentValuesParameters { repeated ReadCurrentValueParameters Parameters = 1; }
+
+// Parameters for reading raw datapoints.
+message ReadRawParameters {
+  TagQueryIdentifier TagIdentifier = 1;            // The tag to read from (required).
+  google.protobuf.Timestamp StartTime = 2;         // The starting timestamp to read data from (required).
+  google.protobuf.Timestamp EndTime = 3;           // The ending timestamp to read data to (required).
+  ReturnRawBoundMode ReturnStartBounds = 4;        // Mode specifying how the starting timestamp should be included.
+  ReturnRawBoundMode ReturnEndBounds = 5;          // Mode specifying how the ending timestamp should be included.
+  DigitalTextReturnType DigitalTextReturnType = 6; // The data type to return if reading digital text datapoints.
+  bool DoNotApplyUnitConversion = 7;               // Indicates if unit conversion should not be applied to the datapoints read.
+  NullableInt32 ArrayStartIndex = 8;               // The start index for reading slices of array datapoints.
+
+  // The slice length for reading slices of array datapoints. If greater than the length of the array, it will be truncated to
+  // avoid invalid indexes. If 0, the original array will be returned. If less than 0, the array will be sliced in reverse and
+  // include indexed values up to and including ArrayStartIndex.
+  NullableInt32 ArrayLength = 9;
+}
+
+// Parameters for streaming raw datapoints.
+message StreamRawParameters {
+  TagQueryIdentifier TagIdentifier = 1;            // The tag to read from (required).
+  google.protobuf.Timestamp StartTime = 2;         // The starting timestamp to read data from (required).
+  google.protobuf.Timestamp EndTime = 3;           // The ending timestamp to read data to (required).
+  ReturnRawBoundMode ReturnStartBounds = 4;        // Mode specifying how the starting timestamp should be included.
+  ReturnRawBoundMode ReturnEndBounds = 5;          // Mode specifying how the ending timestamp should be included.
+  DigitalTextReturnType DigitalTextReturnType = 6; // The data type to return if reading digital text datapoints.
+  bool DoNotApplyUnitConversion = 7;               // Indicates if unit conversion should not be applied to the datapoints read.
+  uint32 ChunkSize = 8;                            // The max number of datapoints in each message streamed from the server.
+  NullableInt32 ArrayStartIndex = 9;               // The start index for reading slices of array datapoints.
+
+  // The slice length for reading slices of array datapoints. If greater than the length of the array, it will be truncated to
+  // avoid invalid indexes. If 0, the original array will be returned. If less than 0, the array will be sliced in reverse and
+  // include indexed values up to and including ArrayStartIndex.
+  NullableInt32 ArrayLength = 10;
+}
+
+// Parameters for streaming raw datapoints in a specified direction.
+message DirectionalStreamRawParameters {
+  TagQueryIdentifier TagIdentifier = 1;            // The tag to read from (required).
+  google.protobuf.Timestamp StartTime = 2;         // The starting timestamp to read data from (required).
+  Direction Direction = 3;                         // The direction in which to read data from the start timestamp (required).
+  int32 NumberOfPoints = 4;                        // The number of datapoints to read (required).
+  ReturnRawBoundMode ReturnStartBounds = 5;        // Mode specifying how the starting timestamp should be included.
+  DigitalTextReturnType DigitalTextReturnType = 6; // The data type to return if reading digital text datapoints.
+  bool DoNotApplyUnitConversion = 7;               // Indicates if unit conversion should not be applied to the datapoints read.
+  uint32 ChunkSize = 8;                            // The max number of datapoints in each message streamed from the server.
+  NullableInt32 ArrayStartIndex = 9;               // The start index for reading slices of array datapoints.
+
+  // The slice length for reading slices of array datapoints. If greater than the length of the array, it will be truncated to
+  // avoid invalid indexes. If 0, the original array will be returned. If less than 0, the array will be sliced in reverse and
+  // include indexed values up to and including ArrayStartIndex.
+  NullableInt32 ArrayLength = 10;
+}
+
+// Parameters for reading aggregated datapoints.
+message ReadProcessedParameters {
+  TagQueryIdentifier TagIdentifier = 1;    // The tag to read from (required).
+  google.protobuf.Timestamp StartTime = 2; // The starting timestamp to read data from (required).
+  google.protobuf.Timestamp EndTime = 3;   // The ending timestamp to read data to (required).
+  bool ReturnBounds = 4; // Indicates whether or not datapoints on the time boundaries should be included in the aggregation.
+  ProcessedSource ProcessedSource = 5;             // The source of data to use for aggregation.
+  DigitalTextReturnType DigitalTextReturnType = 6; // The data type to return if reading digital text datapoints.
+  AggregateConfig AggregateConfig = 7;             // The aggregation paramters to use for reading aggregated data (required).
+
+  // Indicates if aggregation should include partial intervals that occur if the proccessing interval doesn't evenly divide the
+  // overall timespan of the datapoints being aggregated over.
+  bool ReturnPartialIntervals = 8;
+  NullableInt32 ArrayStartIndex = 9; // The start index for reading slices of array datapoints.
+
+  // The slice length for reading slices of array datapoints. If greater than the length of the array, it will be truncated to
+  // avoid invalid indexes. If 0, the original array will be returned. If less than 0, the array will be sliced in reverse and
+  // include indexed values up to and including ArrayStartIndex.
+  NullableInt32 ArrayLength = 10;
+}
+
+// Parameters for reading aggregated datapoints using a preconfigured aggregate.
+message ReadProcessedByConfigParameters {
+  TagQueryIdentifier TagIdentifier = 1;    // The tag to read from (required).
+  google.protobuf.Timestamp StartTime = 2; // The starting timestamp to read data from (required).
+  google.protobuf.Timestamp EndTime = 3;   // The ending timestamp to read data to (required).
+  bool ReturnBounds = 4; // Indicates whether or not datapoints on the time boundaries should be included in the aggregation.
+  string AggregateConfigName = 5;    // The name of the aggregate configuration already defined in the historian (required).
+  bool ProcessRaw = 6;               // Indicates whether raw or saved processed data should be used for aggregation.
+  NullableInt32 ArrayStartIndex = 7; // The start index for reading slices of array datapoints.
+
+  // The slice length for reading slices of array datapoints. If greater than the length of the array, it will be truncated to
+  // avoid invalid indexes. If 0, the original array will be returned. If less than 0, the array will be sliced in reverse and
+  // include indexed values up to and including ArrayStartIndex.
+  NullableInt32 ArrayLength = 8;
+}
+
+// Parameters for streaming aggregated datapoints.
+message StreamProcessedParameters {
+  TagQueryIdentifier TagIdentifier = 1;    // The tag to read from (required).
+  google.protobuf.Timestamp StartTime = 2; // The starting timestamp to read data from (required).
+  google.protobuf.Timestamp EndTime = 3;   // The ending timestamp to read data to (required).
+  bool ReturnBounds = 4; // Indicates whether or not datapoints on the time boundaries should be included in the aggregation.
+  ProcessedSource ProcessedSource = 5;             // The source of data to use for aggregation.
+  DigitalTextReturnType DigitalTextReturnType = 6; // The data type to return if reading digital text datapoints.
+
+  // Indicates if aggregation should include partial intervals that occur if the proccessing interval doesn't evenly divide the
+  // overall timespan of the datapoints being aggregated over.
+  bool ReturnPartialIntervals = 7;
+  AggregateConfig AggregateConfig = 8; // The aggregation paramters to use for reading aggregated data (required).
+  uint32 ChunkSize = 9;                // The max number of datapoints in each message streamed from the server.
+  NullableInt32 ArrayStartIndex = 10;  // The start index for reading slices of array datapoints.
+
+  // The slice length for reading slices of array datapoints. If greater than the length of the array, it will be truncated to
+  // avoid invalid indexes. If 0, the original array will be returned. If less than 0, the array will be sliced in reverse and
+  // include indexed values up to and including ArrayStartIndex.
+  NullableInt32 ArrayLength = 11;
+}
+
+// Parameters for streaming aggregated datapoints in a specified direction.
+message DirectionalStreamProcessedParameters {
+  TagQueryIdentifier TagIdentifier = 1;    // The tag to read from (required).
+  google.protobuf.Timestamp StartTime = 2; // The starting timestamp to read data from (required).
+  Direction Direction = 3;                 // The direction in which to read data from the start timestamp (required).
+  int32 NumberOfPoints = 4;                // The number of datapoints to read (required).
+  AggregateConfig AggregateConfig = 5;     // The aggregation paramters to use for reading aggregated data (required).
+  bool ReturnBounds = 6; // Indicates whether or not datapoints on the time boundaries should be included in the aggregation.
+
+  // Indicates if aggregation should include partial intervals that occur if the proccessing interval doesn't evenly divide the
+  // overall timespan of the datapoints being aggregated over.
+  bool ReturnPartialIntervals = 7;
+  ProcessedSource ProcessedSource = 8;             // The source of data to use for aggregation.
+  DigitalTextReturnType DigitalTextReturnType = 9; // The data type to return if reading digital text datapoints.
+  uint32 ChunkSize = 10;                           // The max number of datapoints in each message streamed from the server.
+  NullableInt32 ArrayStartIndex = 11;              // The start index for reading slices of array datapoints.
+
+  // The slice length for reading slices of array datapoints. If greater than the length of the array, it will be truncated to
+  // avoid invalid indexes. If 0, the original array will be returned. If less than 0, the array will be sliced in reverse and
+  // include indexed values up to and including ArrayStartIndex.
+  NullableInt32 ArrayLength = 12;
+}
+
+// Parameters for streaming aggregated datapoints using a preconfigured aggregate.
+message StreamProcessedByConfigParameters {
+  TagQueryIdentifier TagIdentifier = 1;    // The tag to read from (required).
+  google.protobuf.Timestamp StartTime = 2; // The starting timestamp to read data from (required).
+  google.protobuf.Timestamp EndTime = 3;   // The ending timestamp to read data to (required).
+  bool ReturnBounds = 4; // Indicates whether or not datapoints on the time boundaries should be included in the aggregation.
+  string AggregateConfigName = 5;    // The name of the aggregate configuration already defined in the historian (required).
+  bool ProcessRaw = 6;               // Indicates whether raw or saved processed data should be used for aggregation.
+  uint32 ChunkSize = 7;              // The max number of datapoints in each message streamed from the server.
+  NullableInt32 ArrayStartIndex = 8; // The start index for reading slices of array datapoints.
+
+  // The slice length for reading slices of array datapoints. If greater than the length of the array, it will be truncated to
+  // avoid invalid indexes. If 0, the original array will be returned. If less than 0, the array will be sliced in reverse and
+  // include indexed values up to and including ArrayStartIndex.
+  NullableInt32 ArrayLength = 9;
+}
+
+// Parameters for streaming aggregated datapoints in a specified direction using a preconfigured aggregate.
+message DirectionalStreamProcessedByConfigParameters {
+  TagQueryIdentifier TagIdentifier = 1;    // The tag to read from (required).
+  google.protobuf.Timestamp StartTime = 2; // The starting timestamp to read data from (required).
+  Direction Direction = 3;                 // The direction in which to read data from the start timestamp (required).
+  int32 NumberOfPoints = 4;                // The number of datapoints to read (required).
+  string AggregateConfigName = 5;          // The name of the aggregate configuration already defined in the historian (required).
+  bool ReturnBounds = 6; // Indicates whether or not datapoints on the time boundaries should be included in the aggregation.
+  bool ProcessRaw = 7;   // Indicates whether raw or saved processed data should be used for aggregation.
+  uint32 ChunkSize = 8;  // The max number of datapoints in each message streamed from the server.
+  NullableInt32 ArrayStartIndex = 9; // The start index for reading slices of array datapoints.
+
+  // The slice length for reading slices of array datapoints. If greater than the length of the array, it will be truncated to
+  // avoid invalid indexes. If 0, the original array will be returned. If less than 0, the array will be sliced in reverse and
+  // include indexed values up to and including ArrayStartIndex.
+  NullableInt32 ArrayLength = 10;
+}
+
+// Parameters for reading raw datapoints at specific timestamps.
+message ReadAtTimeParameters {
+  TagQueryIdentifier TagIdentifier = 1;              // The tag to read from (required).
+  repeated google.protobuf.Timestamp Timestamps = 2; // The timestamps at which to read datapoints (required).
+
+  // If true then the datapoint that matches the timestamp requested and doesn't have quality Quality.Bad_BoundNotFound is
+  // returned. If no datapoints match the timestamps requested, then the datapoint at the previous timestamp is returned. If false
+  // and no datapoints match the timestamp requested, then a linearly interpolated datapoint is calculated from 2 bounding
+  // datapoints, if they exist. If only a begin bound is found, then a step interpolated datapoint is returned.
+  bool UseSimpleBounds = 3;
+  NullableInt32 ArrayStartIndex = 4; // The start index for reading slices of array datapoints.
+
+  // The slice length for reading slices of array datapoints. If greater than the length of the array, it will be truncated to
+  // avoid invalid indexes. If 0, the original array will be returned. If less than 0, the array will be sliced in reverse and
+  // include indexed values up to and including ArrayStartIndex.
+  NullableInt32 ArrayLength = 5;
+}
+
+// For reading and writing configurations and data.
+service SDKService {
+  // Get all historian paths.
+  rpc GetHistorianPathConfigs(google.protobuf.Empty) returns (HistorianPathConfigList);
+  // Get all interface groups.
+  rpc GetInterfaceGroups(google.protobuf.Empty) returns (InterfaceGroupConfigList);
+  // Get all interfaces for an interface group.
+  rpc GetInterfaces(GetInterfacesParameters) returns (InterfaceConfigList);
+  // Get a single interface.
+  rpc GetInterface(GetInterfaceParameters) returns (ReadInterfaceResult);
+  // Get all interface sets for an interface group.
+  rpc GetInterfaceSets(GetInterfaceSetsParameters) returns (ReadInterfaceSetListResult);
+  // Get a single interface set.
+  rpc GetInterfaceSet(GetInterfaceSetParameters) returns (ReadInterfaceSetResult);
+  // Get a single tag.
+  rpc GetTag(GetTagParameters) returns (ReadTagResult);
+  // Get all tags for an interface.
+  rpc GetTagsByInterface(InterfaceConfig) returns (ReadTagListResult);
+  // Get all tags for an interface set.
+  rpc GetTagsByInterfaceSet(InterfaceSetConfig) returns (ReadTagListResult);
+
+  // Create or update a historian path.
+  rpc WriteHistorianPathConfig(HistorianPathConfig) returns (HistorianPathConfig);
+  // Create or update an interface group.
+  rpc WriteInterfaceGroupConfig(InterfaceGroupConfig) returns (InterfaceGroupConfig);
+  // Create or update an interface.
+  rpc WriteInterface(InterfaceConfig) returns (InterfaceConfig);
+  // Create or update a tag.
+  rpc WriteTag(TagConfig) returns (TagConfig);
+
+  // Create or update a stream of tags.
+  // Note: Always use a separate thread to receive response.
+  // If you don't read the server responses, then this method can deadlock.
+  rpc WriteTags(stream TagConfig) returns (stream TagConfig);
+
+  // Stream current values for a collection of tags.
+  rpc ReadCurrentValuesStream(ReadCurrentValuesParameters) returns (stream TagCurrentValues);
+  // Read current values for a collection of tags.
+  rpc ReadCurrentValues(ReadCurrentValuesParameters) returns (TagCurrentValues);
+  // Read raw datapoints at specific timestamps for a single tag.
+  rpc ReadAtTime(ReadAtTimeParameters) returns (ReadAtTimeResult);
+  // Read a count of raw datapoints for a given time period for a single tag.
+  rpc ReadRawCount(ReadRawParameters) returns (ReadCountResult);
+  // Stream raw datapoints for a given time period for a single tag.
+  rpc StreamRawData(StreamRawParameters) returns (stream StreamRawMessage);
+  // Stream raw datapoints for given time periods for a collection of tags.
+  rpc StreamRawBulkData(stream StreamRawParameters) returns (stream StreamRawMessage);
+  // Stream a specified number of raw datapoints either forwards or backwards in time from a starting timestamp for a single tag.
+  rpc DirectionalStreamRawData(DirectionalStreamRawParameters) returns (stream StreamRawMessage);
+  // Read a count of aggregated datapoints for a given time period for a single tag.
+  rpc ReadProcessedCount(ReadProcessedParameters) returns (ReadCountResult);
+  // Stream aggregated datapoints for a given time period for a single tag.
+  rpc StreamProcessedData(StreamProcessedParameters) returns (stream StreamProcessedMessage);
+  // Stream aggregated datapoints for given time periods for a collection of tags.
+  rpc StreamProcessedBulkData(stream StreamProcessedParameters) returns (stream StreamProcessedMessage);
+  // Stream a specified number of aggregated datapoints either forwards or backwards in time from a starting timestamp for
+  // a single tag.
+  rpc DirectionalStreamProcessedData(DirectionalStreamProcessedParameters) returns (stream StreamProcessedMessage);
+  // Read a count of aggregated datapoints for a preconfigured aggregate and a given time period for a single tag.
+  rpc ReadProcessedByConfigCount(ReadProcessedByConfigParameters) returns (ReadCountResult);
+  // Stream aggregated datapoints for a preconfigured aggregate and a given time period for a single tag.
+  rpc StreamProcessedDataByConfig(StreamProcessedByConfigParameters) returns (stream StreamProcessedMessage);
+  // Stream aggregated datapoints for preconfigured aggregates and given time periods for a collection of tags.
+  rpc StreamProcessedBulkDataByConfig(stream StreamProcessedByConfigParameters) returns (stream StreamProcessedMessage);
+  // Stream a specified number of aggregated datapoints either forwards or backwards in time from a starting timestamp and a
+  // preconfigured aggregate for a single tag.
+  rpc DirectionalStreamProcessedDataByConfig(DirectionalStreamProcessedByConfigParameters)
+      returns (stream StreamProcessedMessage);
+
+  // Write a collection of datapoints to history.
+  rpc WriteDataBulk(TagDataToHistorizeList) returns (WriteResult);
+
+  // Get a health report from the server.
+  rpc GetHealthReport(google.protobuf.Empty) returns (HealthReportResult);
+}

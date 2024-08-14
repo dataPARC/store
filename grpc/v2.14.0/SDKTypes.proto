@@ -1,0 +1,733 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+option csharp_namespace = "dataPARC.Store.FrontEnd.GRPCSupport.Types";
+
+// Custom type to represent Nullable&lt;string&gt;
+message NullableString {
+  oneof kind {
+    google.protobuf.NullValue null = 1; // The null value if this NullableString is null.
+    string data = 2;                    // The string value if this NullableString contains one.
+  }
+}
+
+// Custom type to represent Nullable&lt;int&gt;
+message NullableInt32 {
+  oneof kind {
+    google.protobuf.NullValue null = 1; // The null value if this NullableInt32 is null.
+    int32 data = 2;                     // The int value if this NullableInt32 contains one.
+  }
+}
+
+// Custom type to represent Nullable&lt;uint&gt;
+message NullableUInt32 {
+  oneof kind {
+    google.protobuf.NullValue null = 1; // The null value if this NullableUInt32 is null.
+    uint32 data = 2;                    // The uint value if this NullableUInt32 contains one.
+  }
+}
+
+// Custom type to represent Nullable&lt;bool&gt;
+message NullableBoolean {
+  oneof kind {
+    google.protobuf.NullValue null = 1; // The null value if this NullableBoolean is null.
+    bool data = 2;                      // The bool value if this NullableBoolean contains one.
+  }
+}
+
+// Custom type to represent Nullable&lt;float&gt;
+message NullableFloat {
+  oneof kind {
+    google.protobuf.NullValue null = 1; // The null value if this NullableFloat is null.
+    float data = 2;                     // The float value if this NullableFloat contains one.
+  }
+}
+
+// Custom type to represent Nullable&lt;double&gt;
+message NullableDouble {
+  oneof kind {
+    google.protobuf.NullValue null = 1; // The null value if this NullableDouble is null.
+    double data = 2;                    // The double value if this NullableDouble contains one.
+  }
+}
+
+// Custom type to represent Nullable&lt;Timestamp&gt;
+message NullableTimestamp {
+  oneof kind {
+    google.protobuf.NullValue null = 1; // The null value if this NullableTimestamp is null.
+    google.protobuf.Timestamp data = 2; // The Timestamp value if this NullableTimestamp contains one.
+  }
+}
+
+// Custom type to represent Nullable&lt;InterpolateType&gt;
+message NullableInterpolateType {
+  oneof kind {
+    google.protobuf.NullValue null = 1; // The null value if this NullableInterpolateType is null.
+    InterpolateType data = 2;           // The InterpolateType value if this NullableInterpolateType contains one.
+  }
+}
+
+// Custom type to represent Nullable&lt;AggregateConfig&gt;
+message NullableAggregateConfig {
+  oneof kind {
+    google.protobuf.NullValue null = 1; // The null value if this NullableAggregateConfig is null.
+    AggregateConfig data = 2;           // The AggregateConfig value if this NullableAggregateConfig contains one.
+  }
+}
+
+// Custom type to represent Nullable&lt;FullyQualifiedTagName&gt;
+message NullableFullyQualifiedTagName {
+  oneof kind {
+    google.protobuf.NullValue null = 1; // The null value if this NullableFullyQualifiedTagName is null.
+    FullyQualifiedTagName data = 2;     // The FullyQualifiedTagName value if this NullableFullyQualifiedTagName contains one.
+  }
+}
+
+// Custom type to represent Nullable&lt;Exception&gt;
+message NullableException {
+  oneof kind {
+    google.protobuf.NullValue null = 1; // The null value if this NullableException is null.
+    Exception data = 2;                 // The Exception value if this NullableException contains one.
+  }
+}
+
+// Custom type to represent a .NET Decimal
+message DecimalValue {
+  int64 units = 1;    // Whole units part of the amount.
+  sfixed32 nanos = 2; // Nano units of the amount to (10^-9) precision. Must be same sign as units.
+}
+
+message Quality {
+  bytes Source = 1;
+  bytes Historian = 2;
+}
+
+message Exception {
+  NullableString Message = 1;
+  NullableString StackTrace = 2;
+  NullableException InnerException = 3;
+}
+
+// An identifier for a tag in the historian.
+message TagIdentifier {
+  FullyQualifiedTagName FullyQualifiedTagName = 1; // The fully qualified name of the tag this TagIdentifier represents.
+  string Guid = 2;                                 // The guid of the tag this TagIdentifier represents.
+  int32 Id = 3;                                    // The Id of the tag this TagIdentifier represents.
+}
+
+// A query for a tag in the historian.
+message TagQueryIdentifier {
+  oneof kind {
+    FullyQualifiedTagName FullyQualifiedTagName = 1; // The fully qualified name of the tag in the query.
+    string Guid = 2;                                 // The guid of the tag in the query.
+    int32 Id = 3;                                    // The Id of the tag in the query.
+  }
+}
+
+// A fully qualified name for a tag in the historian. This is the full string required to uniquely identify a tag.
+message FullyQualifiedTagName {
+  string InterfaceGroup = 1;       // The name of the interface group that this tag belongs to.
+  NullableString Interface = 2;    // The name of the interface that this tag belongs to.
+  NullableString InterfaceSet = 3; // The name of the interface set that this tag belongs to.
+  string Tag = 4;                  // The name of the tag.
+}
+
+// A collection of history paths.
+message HistorianPathConfigList { repeated HistorianPathConfig HistorianPathConfigs = 1; }
+
+// Represents a history path, which is any type of path at which data can be stored, i.e. directory path, network path, etc.
+message HistorianPathConfig {
+  int32 Id = 1;                                   // The ID of this history path.
+  string Name = 2;                                // The name of this history path (required).
+  string FullPath = 3;                            // The path at which to store data (required).
+  NullableString Description = 4;                 // The description of this history path.
+  string ModifiedBy = 5;                          // The username of the user who last modified this history path.
+  google.protobuf.Timestamp ModifiedDateTime = 6; // The timestamp of when this history path was last modified.
+  string ModifiedComputer = 7;                    // The name of tghe computer on which this history path was last modified.
+  string ModifiedComputerAddress = 8;             // The address of the computer on which this history path was last modified.
+}
+
+// A collection of interface groups.
+message InterfaceGroupConfigList { repeated InterfaceGroupConfig InterfaceGroupConfigs = 1; }
+
+// Represents an interface group, which is the top level entity for interfaces and tags.
+message InterfaceGroupConfig {
+  int32 Id = 1;                // The Id of this interface group.
+  string Name = 2;             // The name of this interface group (required).
+  NullableString Guid = 3;     // The guid of this interface group.
+  int32 HistorianPathId = 4;   // The Id of the history path this interface group is assigned to (required).
+  NullableString Timezone = 5; // The default time zone of this interface group (required).
+  NullableString RemoteHost = 6;
+  NullableInt32 RemotePort = 7;
+  NullableString RemoteGroupName = 8;
+  bool Active = 9;                                 // Indicates if this interface group is active in the historian.
+  string ModifiedBy = 10;                          // The username of the user who last modified this interface group.
+  google.protobuf.Timestamp ModifiedDateTime = 11; // The timestamp of when this interface group was last modified.
+  string ModifiedComputer = 12;                    // The name of the computer on which this interface group was last modified.
+  string ModifiedComputerAddress = 13;             // The address of the computer on which this interface group was last modified.
+}
+
+// A collection of interfaces.
+message InterfaceConfigList { repeated InterfaceConfig InterfaceConfigs = 1; }
+
+// Represents an interface, which is a group of tags.
+message InterfaceConfig {
+  int32 Id = 1;            // The Id of this interface.
+  int32 GroupId = 2;       // The Id of the interface group that this interface belongs to (required).
+  string GroupName = 3;    // The name of the interface group that this interface belongs to.
+  string Name = 4;         // The name of this interface (required).
+  NullableString Guid = 5; // The guid of this interface.
+
+  // The override historian path ID of this interface. This path, if specified, will be used instead of HistorianPathId from the
+  // interface group this interface belongs to.
+  NullableInt32 OverrideHistorianPathId = 6;
+  NullableString TimeZone = 7; // The time zone for this interface.
+  FileType FileType = 8;       // The type of files that data for this interface will be stored in.
+  bool Active = 9;             // Indicates if this interface is active in the historian.
+
+  // Indicates if collectors should send current only values to this interface. These are values that aren't historized.
+  bool SendCurrentValues = 10;
+  string ModifiedBy = 11;                          // The username of the user who last modified this interface.
+  google.protobuf.Timestamp ModifiedDateTime = 12; // The timestamp of when this interface was last modified.
+  string ModifiedComputer = 13;                    // The name of the computer on which this interface was last modified.
+  string ModifiedComputerAddress = 14;             // The address of the computer on which this interface was last modified.
+  bool AllowWrites = 15;                           // Indicates if this interface allows writes back from collectors.
+}
+
+// Represents an interface set, which is a grouping of a subset of interfaces in an interface group.
+message InterfaceSetConfig {
+  int32 Id = 1;         // The Id of this interface set.
+  string Name = 2;      // The name of this interface set (required).
+  int32 GroupId = 3;    // The Id of the interface group that this interface set belongs to (required).
+  string GroupName = 4; // The name of the interface group that this interface set belongs to.
+
+  // Indicates whether all interfaces in the interface group are included in this interface set. 1 means all
+  // interfaces in the interface group are included in this interface set. 0 means a selection of interfaces in
+  // the interface group are included in this interface set, possibly including all interfaces.
+  int32 Scope = 5;
+  bool Active = 6;                                // Indicates if this interface set is active in the historian.
+  string ModifiedBy = 7;                          // The username of the user who last modified this interface.
+  google.protobuf.Timestamp ModifiedDateTime = 8; // The timestamp of when this interface set was last modified.
+  string ModifiedComputer = 9;                    // The name of the computer on which this interface set was last modified.
+  string ModifiedComputerAddress = 10;            // The address of the computer on which this interface set was last modified.
+}
+
+// Represents a tag, which can be anything that has a data stream such as a sensor, calculation, etc.
+message TagConfig {
+  int32 Id = 1;                        // The Id of this tag.
+  string Name = 2;                     // The name of this tag (required).
+  NullableString Guid = 3;             // The giud of this tag.
+  NullableString Description = 4;      // The description of this tag.
+  ValueType DataType = 5;              // The data type of this tag (required).
+  DrawMode DrawMode = 6;               // How this tag draws when rendered in a display.
+  InterpolateType InterpolateType = 7; // The interpolate type of this tag.
+  NullableString Address = 8;          // The path to the tag value.
+  int32 InterfaceId = 9;               // The Id of the interface that this tag belongs to (required).
+  NullableString InterfaceName = 10;   // The name of the interface that this tag belongs to.
+  int32 Position = 11;                 // The position of this tag in the data files.
+  NullableString Units = 12;           // The enginerring units of this tag.
+
+  // The maximum timespan to store data if no data has been written within the timespan, in seconds.
+  int32 MaxHistoryInterval = 13;
+  int32 UpdateInterval = 14; // The update interval of this tag, in seconds.
+
+  // The minimum value for this tag. Any values less than this threshold are saved as bad quality, or saved as this minimum value
+  // if ClipToDeadBandMin is set to true.
+  NullableFloat DeadbandMin = 15;
+
+  // The maximum value for this tag. Any values greater than this threshold are saved as bad quality, or saved as this maximum
+  // value if ClipToDeadBandMax is set to true.
+  NullableFloat DeadbandMax = 16;
+  double PlotMin = 17; // The default minimum value when plotted.
+  double PlotMax = 18; // The default maximum value when plotted.
+
+  // A scalar that values can be multiplied by when being read. It can be used for unit conversions.
+  NullableDouble UnitMultiplier = 19;
+
+  // A value to add to values before applying the UnitMultiplier, if one exists. It can be used for unit conversions.
+  NullableDouble UnitPreAdd = 20;
+
+  // A value to add to values after applying the UnitMultiplier, if one exists, It can be used for unit conversions.
+  NullableDouble UnitPostAdd = 21;
+  int32 ArrayLength = 22;                 // The length of the data array.
+  bool Historize = 23;                    // True if values for this tag are to be historized, otherwise false.
+  bool CalcAggregates = 24;               // Enables or disables the tag to calculate aggregate data if the data type supports it.
+  NullableString OpcServerNumber = 25;    // OPC server number for this tag.
+  NullableString OpcServerGroup = 26;     // OPC server group for this tag.
+  bool TaglistVisible = 27;               // Indicates if this tag can be browsed in tag lists.
+  NullableString DisplayFormatMask = 28;  // The display format mask of this tag.
+  NullableString AlternativeAddress = 29; // A backup address for this tag.
+
+  // The percent, or absolute value if DeviationIsAbsolute is set to true, the tag value needs to change before writing to
+  // history.
+  NullableFloat Deviation = 30;
+  bool DeviationIsAbsolute = 31;  // True if Deviation is an absolute value change, false if Deviation is a percent value change.
+  NullableString Parameters = 32; // Optional data gathering parameters in a ';' delimited string, for data collectors.
+
+  // True if values less than DeadbandMin should be saved as DeadbandMin instead keeping the incoming value and being set to bad
+  // quality.
+  bool ClipToDeadbandMin = 33;
+
+  // True if values less than DeadbandMax should be saved as DeadbandMax instead keeping the incoming value and being set to bad
+  // quality.
+  bool ClipToDeadbandMax = 34;
+
+  NullableInt32 DigitalMapId = 35;                 // The ID of the digital mapping this tag is configured for, if any.
+  bool Active = 36;                                // Indicates if this tag is active in the historian.
+  string ModifiedBy = 37;                          // The username of the user who last modified this tag.
+  google.protobuf.Timestamp ModifiedDateTime = 38; //     The timestamp of when this tag was last modified.
+  string ModifiedComputer = 39;                    // The name of the computer on which this tag was last modified.
+  string ModifiedComputerAddress = 40;             // The address of the computer on which this tag was last modified.
+  bool AllowWrites = 41;                           // Indicates if this tag allows writes back from collectors.
+  NullableInt32 ReadTagId = 42; // The ID of another tag from which this tag reads it values from, if configured.
+}
+
+message DigtalTextValue {
+  string Text = 1;
+  int32 Numeric = 2;
+}
+
+// Represents a datapoint to be written to history.
+message TagDataToHistorize {
+  TagQueryIdentifier TagIdentifier = 1;
+  DataPoint DataPoint = 2;
+  bool WriteToHistory = 3;
+  NullableString TrackingGuid = 4;
+}
+
+// A collection of datapoints to be written to history.
+message TagDataToHistorizeList { repeated TagDataToHistorize Values = 1; }
+// Represents a datapoint to be written to history.y
+
+message ReadInterfaceResult {
+  bool HasError = 1;
+  ResultErrorCode ErrorCode = 2;
+  NullableException Exception = 3;
+  InterfaceConfig Value = 4;
+}
+
+message ReadInterfaceSetListResult {
+  bool HasError = 1;
+  ResultErrorCode ErrorCode = 2;
+  NullableException Exception = 3;
+  repeated InterfaceSetConfig Values = 4;
+}
+
+message ReadInterfaceSetResult {
+  bool HasError = 1;
+  ResultErrorCode ErrorCode = 2;
+  NullableException Exception = 3;
+  InterfaceSetConfig Value = 4;
+}
+
+message ReadTagResult {
+  bool HasError = 1;
+  ResultErrorCode ErrorCode = 2;
+  NullableException Exception = 3;
+  TagConfig Value = 4;
+}
+
+message ReadTagListResult {
+  bool HasError = 1;
+  ResultErrorCode ErrorCode = 2;
+  NullableException Exception = 3;
+  repeated TagConfig Value = 4;
+}
+
+message TagCurrentValue {
+  TagIdentifier TagIdentifier = 1;
+  DataPoint Data = 2;
+  bool WriteToHistory = 3;
+}
+
+message TagCurrentValues { repeated TagCurrentValue Values = 1; }
+
+message DataPointCollection {
+  oneof Value {
+    DataPointsDouble DataPointsDouble = 1;
+    DataPointsFloat DataPointsFloat = 2;
+    DataPointsInt DataPointsInt = 3;
+    DataPointsUInt DataPointsUInt = 4;
+    DataPointsLong DataPointsLong = 5;
+    DataPointsULong DataPointsULong = 6;
+    DataPointsDecimal DataPointsDecimal = 7;
+    DataPointsShort DataPointsShort = 8;
+    DataPointsUShort DataPointsUShort = 9;
+    DataPointsBool DataPointsBool = 10;
+    DataPointsByte DataPointsByte = 11;
+    DataPointsSByte DataPointsSByte = 12;
+    DataPointsString DataPointsString = 13;
+    DataPointsDateTime DataPointsDateTime = 14;
+    DataPointsDigitalText DataPointsDigitalText = 15;
+  }
+}
+
+message DataPoint {
+  oneof Value {
+    DataPointDouble DataPointDouble = 1;
+    DataPointFloat DataPointFloat = 2;
+    DataPointInt DataPointInt = 3;
+    DataPointUInt DataPointUInt = 4;
+    DataPointLong DataPointLong = 5;
+    DataPointULong DataPointULong = 6;
+    DataPointDecimal DataPointDecimal = 7;
+    DataPointShort DataPointShort = 8;
+    DataPointUShort DataPointUShort = 9;
+    DataPointBool DataPointBool = 10;
+    DataPointByte DataPointByte = 11;
+    DataPointSByte DataPointSByte = 12;
+    DataPointString DataPointString = 13;
+    DataPointDateTime DataPointDateTime = 14;
+    DataPointDigitalText DataPointDigitalText = 15;
+  }
+}
+
+message ReadRawResult {
+  TagIdentifier TagIdentifier = 1;
+  DataPointCollection DataPointCollection = 2;
+  ReadRawStatus Status = 3;
+  bool MaxDatapointsReached = 4;
+}
+
+message StreamRawMessage {
+  oneof Value {
+    StreamRawHeader Header = 1;
+    DataPointCollection DataPoints = 2;
+  }
+}
+
+message StreamRawHeader {
+  TagIdentifier TagIdentifier = 1;
+  ReadRawStatus Status = 2;
+}
+
+message StreamProcessedMessage {
+  oneof Value {
+    StreamProcessedHeader Header = 1;
+    DataPointCollection DataPoints = 2;
+  }
+}
+
+message StreamProcessedHeader {
+  TagIdentifier TagIdentifier = 1;
+  ReadProcessedStatus Status = 2;
+}
+
+message ReadCountResult {
+  TagIdentifier TagIdentifier = 1;
+  int32 Count = 2;
+  ReadCountStatus Status = 3;
+}
+
+message ReadAtTimeResult {
+  TagIdentifier TagIdentifier = 1;
+  DataPointCollection DataPointCollection = 2;
+  ReadAtTimeStatus Status = 3;
+}
+
+message ReadProcessedResult {
+  TagIdentifier TagIdentifier = 1;
+  DataPointCollection DataPointCollection = 2;
+  ReadProcessedStatus Status = 3;
+  bool MaxDatapointsReached = 4;
+  NullableAggregateConfig AggregateConfig = 5;
+}
+
+message DataPointsDouble { repeated DataPointDouble DataPoints = 1; }
+
+message DataPointsFloat { repeated DataPointFloat DataPoints = 1; }
+
+message DataPointsInt { repeated DataPointInt DataPoints = 1; }
+
+message DataPointsUInt { repeated DataPointUInt DataPoints = 1; }
+
+message DataPointsLong { repeated DataPointLong DataPoints = 1; }
+
+message DataPointsULong { repeated DataPointULong DataPoints = 1; }
+
+message DataPointsDecimal { repeated DataPointDecimal DataPoints = 1; }
+
+message DataPointsShort { repeated DataPointShort DataPoints = 1; }
+
+message DataPointsUShort { repeated DataPointUShort DataPoints = 1; }
+
+message DataPointsBool { repeated DataPointBool DataPoints = 1; }
+
+message DataPointsByte { repeated DataPointByte DataPoints = 1; }
+
+message DataPointsSByte { repeated DataPointSByte DataPoints = 1; }
+
+message DataPointsString { repeated DataPointString DataPoints = 1; }
+
+message DataPointsDateTime { repeated DataPointDateTime DataPoints = 1; }
+
+message DataPointsDigitalText { repeated DataPointDigitalText DataPoints = 1; }
+
+message DataPointDouble {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated double Value = 3;
+}
+
+message DataPointFloat {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated float Value = 3;
+}
+message DataPointInt {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated sfixed32 Value = 3;
+}
+message DataPointUInt {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated uint32 Value = 3;
+}
+
+message DataPointLong {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated sfixed64 Value = 3;
+}
+
+message DataPointULong {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated fixed64 Value = 3;
+}
+
+message DataPointDecimal {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated DecimalValue Value = 3;
+}
+
+message DataPointShort {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated int32 Value = 3;
+}
+
+message DataPointUShort {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated uint32 Value = 3;
+}
+
+message DataPointBool {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated bool Value = 3;
+}
+message DataPointByte {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated bytes Value = 3;
+}
+
+message DataPointSByte {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated bytes Value = 3;
+}
+message DataPointString {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated NullableString Value = 3;
+}
+
+message DataPointDateTime {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated google.protobuf.Timestamp Value = 3;
+}
+
+message DataPointDigitalText {
+  google.protobuf.Timestamp Timestamp = 1;
+  Quality Quality = 2;
+  repeated DigtalTextValue Value = 3;
+}
+
+// Represents configuration settings for data aggregation.
+message AggregateConfig {
+  AggregateType AggregateType = 1;                 // The aggregate type, i.e. Time Average, Interpolate, Max, etc., (required).
+  google.protobuf.Duration ProcessingInterval = 2; // The time interval for aggregation (required).
+  google.protobuf.Timestamp AlignmentOrigin = 4;   // The starting point for aggregation. If not set, the epoch is used.
+
+  // The interpolation type to use for aggregates that require it: state or continuous.
+  NullableInterpolateType InterpolateType = 5;
+  bool TreatUncertainAsBad = 6;   // Indicates if uncertain quality data should be treated as bad quality data.
+  bool UseUtcTimeForInterval = 7; // Indicates if UTC time should be use for the processing interval.
+}
+
+message HealthReportResult {
+  string HistorianInstanceId = 1;
+  google.protobuf.Timestamp Timestamp = 2;
+  string HealthStatResults = 3;
+  string HealthCheckResults = 4;
+}
+
+message WriteResult {
+  DataStatus Status = 1;
+  int32 NumPointsReceived = 2;
+  int32 NumCurrValuePoints = 3;
+  int32 NumFailedPoints = 4;
+  repeated string ExceptionMessages = 5;
+}
+
+// Enums
+enum ReadAtTimeStatus {
+  ReadAtTimeStatus_Successful = 0;
+  ReadAtTimeStatus_NoValueFound = 1;
+  ReadAtTimeStatus_UnknownOrInactiveTag = 10;
+  ReadAtTimeStatus_DuplicateTag = 20;
+}
+
+enum ReadRawStatus {
+  ReadRawStatus_Successful = 0;
+  ReadRawStatus_NoValueFound = 1;
+  ReadRawStatus_UnknownOrInactiveTag = 10;
+  ReadRawStatus_DuplicateTag = 20;
+  ReadRawStatus_UnexpectedError = 10000;
+  ReadRawStatus_InvalidDigitalTextConfiguration = 10001;
+  ReadRawStatus_InvalidDateRange = 30000;
+}
+enum ReadProcessedStatus {
+  ReadProcessedStatus_Successful = 0;
+  ReadProcessedStatus_NoValueFound = 1;
+  ReadProcessedStatus_UnknownOrInactiveTag = 10;
+  ReadProcessedStatus_DuplicateTag = 20;
+  ReadProcessedStatus_UnexpectedError = 10000;
+  ReadProcessedStatus_InvalidDigitalTextConfiguration = 10001;
+  ReadProcessedStatus_InvalidParameterValue = 10100;
+  ReadProcessedStatus_ReadRawFailed = 20000;
+  ReadProcessedStatus_MissingAggregateConfig = 20001;
+  ReadProcessedStatus_NotSupported = 20002;
+  ReadProcessedStatus_InvalidDateRange = 3000;
+}
+enum ReadCountStatus {
+  ReadCountStatus_Successful = 0;
+  ReadCountStatus_UnknownOrInactiveTag = 10;
+  ReadCountStatus_UnexpectedError = 10000;
+  ReadCountStatus_InvalidDateRange = 30000;
+}
+enum DigitalTextReturnType {
+
+  DigitalTextReturnType_Numeric = 0;
+  DigitalTextReturnType_Text = 1;
+  DigitalTextReturnType_DigitalText = 2;
+  DigitalTextReturnType_Raw = 3;
+}
+enum FileType {
+  FileType_Day = 0;
+  FileType_Month = 1;
+  FileType_Year = 2;
+}
+enum ResultErrorCode {
+  ResultErrorCode_None = 0;
+  ResultErrorCode_NotFound = 1;
+  ResultErrorCode_Exception = 2;
+}
+enum ValueType {
+  ValueType_None = 0;
+  ValueType_Object = 1;
+  ValueType_Boolean = 3;
+  ValueType_SByte = 5;
+  ValueType_Byte = 6;
+  ValueType_Int16 = 7;
+  ValueType_UInt16 = 8;
+  ValueType_Int32 = 9;
+  ValueType_UInt32 = 10;
+  ValueType_Int64 = 11;
+  ValueType_UInt64 = 12;
+  ValueType_Single = 13;
+  ValueType_Double = 14;
+  ValueType_Decimal = 15;
+  ValueType_DateTime = 16;
+  ValueType_String = 18;
+}
+
+enum DrawMode {
+  DrawMode_Regular = 0;
+  DrawMode_Square = 1;
+  DrawMode_SquareNoEdge = 2;
+  DrawMode_State = 3;
+  DrawMode_StateNoEdge = 4;
+  DrawMode_Exception = 5;
+}
+
+enum InterpolateType {
+  InterpolateType_State = 0;
+  InterpolateType_Continuous = 1;
+}
+enum DataStatus {
+  Successful = 0;
+  PartiallySuccessful = 1;
+  Error = 2;
+  NotQueuedDueToGuidAlreadyExists = 3;
+}
+
+enum ProcessedSource {
+  ProcessedSource_SavedAndProcessRaw = 0;
+  ProcessedSource_Saved = 1;
+  ProcessedSource_ProcessRaw = 2;
+}
+
+enum AggregateType {
+  AggregateType_PlotReduction = 0;
+  AggregateType_Interpolative = 1;
+  AggregateType_Average = 2;
+  AggregateType_TimeAverage = 3;
+  AggregateType_TimeAverage2 = 4;
+  AggregateType_Total = 5;
+  AggregateType_Total2 = 6;
+  AggregateType_Minimum = 7;
+  AggregateType_Maximum = 8;
+  AggregateType_MinimumActualTime = 9;
+  AggregateType_MaximumActualTime = 10;
+  AggregateType_Range = 11;
+  AggregateType_Minimum2 = 12;
+  AggregateType_Maximum2 = 13;
+  AggregateType_MinimumActualTime2 = 14;
+  AggregateType_MaximumActualTime2 = 15;
+  AggregateType_Range2 = 16;
+  AggregateType_Count = 17;
+  AggregateType_AnnotationCount = 18;
+  AggregateType_DurationInStateZero = 19;
+  AggregateType_DurationInStateNonZero = 20;
+  AggregateType_NumberOfTransitions = 21;
+  AggregateType_Start = 22;
+  AggregateType_End = 23;
+  AggregateType_Delta = 24;
+  AggregateType_StartBound = 25;
+  AggregateType_EndBound = 26;
+  AggregateType_DeltaBounds = 27;
+  AggregateType_DurationGood = 28;
+  AggregateType_DurationBad = 29;
+  AggregateType_PercentGood = 30;
+  AggregateType_PercentBad = 31;
+  AggregateType_WorstQuality = 32;
+  AggregateType_WorstQuality2 = 33;
+  AggregateType_StandardDeviationPopulation = 34;
+  AggregateType_VariancePopulation = 35;
+  AggregateType_StandardDeviationSample = 36;
+  AggregateType_VarianceSample = 37;
+  AggregateType_NegativePeak = 38;
+  AggregateType_Peak = 39;
+}
+
+enum ReturnRawBoundMode {
+  ReturnRawBoundMode_NoBound = 0;
+  ReturnRawBoundMode_AnyQuality = 1;
+  ReturnRawBoundMode_GoodOrUncertainQuality = 2;
+  ReturnRawBoundMode_GoodQuality = 3;
+}
+
+enum Direction {
+  Direction_Forwards = 0;
+  Direction_Backwards = 1;
+}
