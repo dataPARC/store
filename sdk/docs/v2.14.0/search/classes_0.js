@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['aggregateconfig_0',['AggregateConfig',['../d1/d03/a01653.html',1,'dataPARC::TimeSeries::Calculations::Aggregation']]]
+  ['aggregateconfig_0',['AggregateConfig',['../d0/d90/a01641.html',1,'dataPARC::TimeSeries::Calculations::Aggregation']]]
 ];

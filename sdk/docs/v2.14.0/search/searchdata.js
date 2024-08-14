@@ -1,6 +1,6 @@
 var indexSectionsWithContent =
 {
-  0: "abcdefghilmnopqrstuvw",
+  0: "\abcdefghilmnopqrstuvw",
   1: "acdfhimprstw",
   2: "d",
   3: "acdfghimprstw",
@@ -8,7 +8,7 @@ var indexSectionsWithContent =
   5: "adgiprst",
   6: "abcdefghilmnpqrstu",
   7: "abcdefghilmnopqrstuvw",
-  8: "dirs"
+  8: "\"
 };
 
 var indexSectionNames =

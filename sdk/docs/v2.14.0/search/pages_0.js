@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dataparc_20store_20dataparc_20store_20sdk_0',['\ref ignore.dataPARC.Store &quot;dataPARC.Store&quot; SDK',['../index.html',1,'']]]
+  ['_5cref_20ignore_2edataparc_2estore_20_22dataparc_2estore_22_20sdk_0',['\ref ignore.dataPARC.Store &quot;dataPARC.Store&quot; SDK',['../index.html',1,'']]]
 ];
