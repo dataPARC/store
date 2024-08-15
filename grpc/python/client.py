@@ -9,10 +9,10 @@ from google.protobuf.timestamp_pb2 import Timestamp
 
 
 def main():
-    cert = ssl.get_server_certificate(("localhost", 12341))
+    cert = ssl.get_server_certificate((host_name, port_number))
     creds = grpc.ssl_channel_credentials(cert.encode())
 
-    with grpc.secure_channel("localhost:12341", creds) as channel:
+    with grpc.secure_channel(f"{host_name}:{port_number}", creds) as channel:
         service = SDKService_pb2_grpc.SDKServiceStub(channel)
 
         # Read all interfaces
@@ -22,7 +22,9 @@ def main():
 
         # Read raw data for a tag
         start = Timestamp()
-        start.FromDatetime(dt.datetime.now(dt.timezone.utc) - dt.timedelta(seconds=5))
+        start.FromDatetime(
+            dt.datetime.now(dt.timezone.utc) - dt.timedelta(seconds=5)
+        )
         end = Timestamp()
         end.FromDatetime(dt.datetime.now(dt.timezone.utc))
         params = SDKService_pb2.StreamRawParameters(
@@ -35,4 +37,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(
