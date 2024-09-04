@@ -351,6 +351,33 @@ foreach (var res in readRes2) {
 }
 ```
 
+### Reading Specific Timestamps
+
+```cs
+await using var client = new ReadClient(hostname, port, CertificateValidation.AcceptAllCertificates);
+
+// Read 1 timestamp for a single tag.
+var readParams1 = new ReadAtTimeParameters(new TagQueryIdentifier(1), DateTime.UtcNow);
+var readRes1 = await client.ReadAtTimeAsync(readParams1);
+
+if (readRes1.Status == ReadAtTimeStatus.Successful) {
+    // The value at the timestamp request. DataPoints is an array because multiple timestamps can be requested.
+    var point = readRes1.DataPoints[0];
+} else {
+    // Something went wrong, check against other ReadAtTimeStatus cases for more info.
+}
+
+// Read multiple timestamps for a single tag.
+var readParams2 = new ReadAtTimeParameters(new TagQueryIdentifier(1), [
+    DateTime.UtcNow.AddMinutes(-5),
+    DateTime.UtcNow.AddMinutes(-4),
+    DateTime.UtcNow.AddMinutes(-3),
+    DateTime.UtcNow.AddMinutes(-2),
+    DateTime.UtcNow.AddMinutes(-1)
+]);
+var readRes2 = await client.ReadAtTimeAsync(readParams1);
+```
+
 ### Reading Raw Data
 
 ```cs
