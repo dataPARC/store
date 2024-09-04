@@ -375,7 +375,7 @@ var readParams2 = new ReadAtTimeParameters(new TagQueryIdentifier(1), [
     DateTime.UtcNow.AddMinutes(-2),
     DateTime.UtcNow.AddMinutes(-1)
 ]);
-var readRes2 = await client.ReadAtTimeAsync(readParams1);
+var readRes2 = await client.ReadAtTimeAsync(readParams2);
 ```
 
 ### Reading Raw Data
