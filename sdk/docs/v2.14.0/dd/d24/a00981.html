@@ -285,11 +285,12 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Delete datapoints for a tag in a given time period. </p>
+<p>If startTime and endTime are equal, then it will attempt to delete data if the passed in DataTime has data.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">tagId</td><td>The ID of the tag to delete data from.</td></tr>
-    <tr><td class="paramname">startTime</td><td>The starting timestamp to delete datapoints from.</td></tr>
-    <tr><td class="paramname">endTime</td><td>The ending timestamp in the time period.</td></tr>
+    <tr><td class="paramname">startTime</td><td>The starting timestamp to delete datapoints from. (Inclusive)</td></tr>
+    <tr><td class="paramname">endTime</td><td>The ending timestamp in the time period. (Exclusive)</td></tr>
     <tr><td class="paramname">awaitCompletion</td><td>Indicates whether the server should complete the delete before returning the call. If false, the call will return once the tag ID and time period have been accepted, but not necessarily once the datapoints have been deleted. If true, the call will wait for the datapoints to be deleted from disk before returning. </td></tr>
     <tr><td class="paramname">deadlineSeconds</td><td>The maximum number of seconds before cancelling the request. If unspecified, the default deadlineSeconds provided when constructing this client is used. </td></tr>
     <tr><td class="paramname">cancellationToken</td><td>A cancellation token that can be used to cancel the operation. If unspecified, no token is attached to the request. </td></tr>
@@ -688,7 +689,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 11 2024 17:25:13 for dataPARC.Store SDK by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
+Generated on Wed Sep 11 2024 21:34:45 for dataPARC.Store SDK by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
 </small></address>
 </body>
 </html>
