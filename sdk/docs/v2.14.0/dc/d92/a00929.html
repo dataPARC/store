@@ -94,12 +94,12 @@ var searchBox = new SearchBox("searchBox", "../../search/",'.html');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a33f1decbda0dd7423c032246f492bf2c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d92/a00929.html#a33f1decbda0dd7423c032246f492bf2c">ClientFactory</a> ((string host, int port)[] servers, ICertificateValidation certificateValidation, IAuthProvider authProvider=null, bool enableInternalLogMessages=false, int deadlineSeconds=120, int avgFailoverMinutes=5)</td></tr>
-<tr class="memdesc:a33f1decbda0dd7423c032246f492bf2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the ClientFactory class with an array of hostnames and port numbers.  <br /></td></tr>
-<tr class="separator:a33f1decbda0dd7423c032246f492bf2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf971fea9d177801eb9b3c97b7f43ffd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d92/a00929.html#aaf971fea9d177801eb9b3c97b7f43ffd">ClientFactory</a> (string host, int port, ICertificateValidation certificateValidation, IAuthProvider authProvider=null, bool enableInternalLogMessages=false, int deadlineSeconds=120)</td></tr>
-<tr class="memdesc:aaf971fea9d177801eb9b3c97b7f43ffd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the ClientFactory class with a hostname and port number.  <br /></td></tr>
-<tr class="separator:aaf971fea9d177801eb9b3c97b7f43ffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41f3cfe94fe18c3c28d1ee9378b51c55"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d92/a00929.html#a41f3cfe94fe18c3c28d1ee9378b51c55">ClientFactory</a> ((string host, int port)[] servers, ICertificateValidation certificateValidation, IAuthProvider authProvider=null, bool enableInternalLogMessages=false, int deadlineSeconds=int.MaxValue, int avgFailoverMinutes=5)</td></tr>
+<tr class="memdesc:a41f3cfe94fe18c3c28d1ee9378b51c55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the ClientFactory class with an array of hostnames and port numbers.  <br /></td></tr>
+<tr class="separator:a41f3cfe94fe18c3c28d1ee9378b51c55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ec4bc0a6e85c3eb8f785033473a049d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d92/a00929.html#a2ec4bc0a6e85c3eb8f785033473a049d">ClientFactory</a> (string host, int port, ICertificateValidation certificateValidation, IAuthProvider authProvider=null, bool enableInternalLogMessages=false, int deadlineSeconds=int.MaxValue)</td></tr>
+<tr class="memdesc:a2ec4bc0a6e85c3eb8f785033473a049d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the ClientFactory class with a hostname and port number.  <br /></td></tr>
+<tr class="separator:a2ec4bc0a6e85c3eb8f785033473a049d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a856e294e6e3e1b5de158694f89889f8c"><td class="memItemLeft" align="right" valign="top"><a id="a856e294e6e3e1b5de158694f89889f8c" name="a856e294e6e3e1b5de158694f89889f8c"></a>
 async ValueTask&#160;</td><td class="memItemRight" valign="bottom"><b>DisposeAsync</b> ()</td></tr>
 <tr class="separator:a856e294e6e3e1b5de158694f89889f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,8 +126,8 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides lazily constructed clients based on 1 set of historian server connection info. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aaf971fea9d177801eb9b3c97b7f43ffd" name="aaf971fea9d177801eb9b3c97b7f43ffd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf971fea9d177801eb9b3c97b7f43ffd">&#9670;&#160;</a></span>ClientFactory() <span class="overload">[1/2]</span></h2>
+<a id="a2ec4bc0a6e85c3eb8f785033473a049d" name="a2ec4bc0a6e85c3eb8f785033473a049d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ec4bc0a6e85c3eb8f785033473a049d">&#9670;&#160;</a></span>ClientFactory() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -166,7 +166,7 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>deadlineSeconds</em> = <code>120</code>&#160;</td>
+          <td class="paramname"><em>deadlineSeconds</em> = <code>int::MaxValue</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -191,8 +191,8 @@ Properties</h2></td></tr>
 
 </div>
 </div>
-<a id="a33f1decbda0dd7423c032246f492bf2c" name="a33f1decbda0dd7423c032246f492bf2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33f1decbda0dd7423c032246f492bf2c">&#9670;&#160;</a></span>ClientFactory() <span class="overload">[2/2]</span></h2>
+<a id="a41f3cfe94fe18c3c28d1ee9378b51c55" name="a41f3cfe94fe18c3c28d1ee9378b51c55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41f3cfe94fe18c3c28d1ee9378b51c55">&#9670;&#160;</a></span>ClientFactory() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -225,7 +225,7 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>deadlineSeconds</em> = <code>120</code>, </td>
+          <td class="paramname"><em>deadlineSeconds</em> = <code>int::MaxValue</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -260,7 +260,7 @@ Properties</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Sep 19 2024 16:43:40 for dataPARC.Store SDK by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
+Generated on Thu Sep 26 2024 15:59:40 for dataPARC.Store SDK by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
 </small></address>
 </body>
 </html>

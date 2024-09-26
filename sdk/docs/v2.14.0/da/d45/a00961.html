@@ -93,12 +93,12 @@ var searchBox = new SearchBox("searchBox", "../../search/",'.html');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aef502cc559d7cf189957fb593d951e4a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d45/a00961.html#aef502cc559d7cf189957fb593d951e4a">ReadClient</a> ((string host, int port)[] servers, ICertificateValidation certificateValidation, IAuthProvider authProvider=null, bool enableInternalLogMessages=false, int deadlineSeconds=120, int avgFailoverMinutes=5)</td></tr>
-<tr class="memdesc:aef502cc559d7cf189957fb593d951e4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the ReadClient class with an array of hostnames and port numbers.  <br /></td></tr>
-<tr class="separator:aef502cc559d7cf189957fb593d951e4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec4b319f4c982dd444480ce290c32042"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d45/a00961.html#aec4b319f4c982dd444480ce290c32042">ReadClient</a> (string host, int port, ICertificateValidation certificateValidation, IAuthProvider authProvider=null, bool enableInternalLogMessages=false, int deadlineSeconds=120)</td></tr>
-<tr class="memdesc:aec4b319f4c982dd444480ce290c32042"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the ReadClient class with a hostname and port number.  <br /></td></tr>
-<tr class="separator:aec4b319f4c982dd444480ce290c32042"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7afc32f3e99c2c5ef2eb1efce36e0df"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d45/a00961.html#ad7afc32f3e99c2c5ef2eb1efce36e0df">ReadClient</a> ((string host, int port)[] servers, ICertificateValidation certificateValidation, IAuthProvider authProvider=null, bool enableInternalLogMessages=false, int deadlineSeconds=int.MaxValue, int avgFailoverMinutes=5)</td></tr>
+<tr class="memdesc:ad7afc32f3e99c2c5ef2eb1efce36e0df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the ReadClient class with an array of hostnames and port numbers.  <br /></td></tr>
+<tr class="separator:ad7afc32f3e99c2c5ef2eb1efce36e0df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43ebc74354925cf4db8729679aa679b2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d45/a00961.html#a43ebc74354925cf4db8729679aa679b2">ReadClient</a> (string host, int port, ICertificateValidation certificateValidation, IAuthProvider authProvider=null, bool enableInternalLogMessages=false, int deadlineSeconds=int.MaxValue)</td></tr>
+<tr class="memdesc:a43ebc74354925cf4db8729679aa679b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the ReadClient class with a hostname and port number.  <br /></td></tr>
+<tr class="separator:a43ebc74354925cf4db8729679aa679b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8af5b2a6591780ee9e61b20f8846488"><td class="memItemLeft" align="right" valign="top">async ValueTask&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d45/a00961.html#ae8af5b2a6591780ee9e61b20f8846488">CheckConnectionAsync</a> (int? deadlineSeconds=10, CancellationToken cancellationToken=default)</td></tr>
 <tr class="memdesc:ae8af5b2a6591780ee9e61b20f8846488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the client can connect to the server. This doesn't not indicate an always open connection between this client and the server, but only that it can make a connection without failing.  <br /></td></tr>
 <tr class="separator:ae8af5b2a6591780ee9e61b20f8846488"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,8 +184,8 @@ async ValueTask&#160;</td><td class="memItemRight" valign="bottom"><b>DisposeAsy
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides methods for reading data. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aec4b319f4c982dd444480ce290c32042" name="aec4b319f4c982dd444480ce290c32042"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec4b319f4c982dd444480ce290c32042">&#9670;&#160;</a></span>ReadClient() <span class="overload">[1/2]</span></h2>
+<a id="a43ebc74354925cf4db8729679aa679b2" name="a43ebc74354925cf4db8729679aa679b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43ebc74354925cf4db8729679aa679b2">&#9670;&#160;</a></span>ReadClient() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -224,7 +224,7 @@ async ValueTask&#160;</td><td class="memItemRight" valign="bottom"><b>DisposeAsy
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>deadlineSeconds</em> = <code>120</code>&#160;</td>
+          <td class="paramname"><em>deadlineSeconds</em> = <code>int::MaxValue</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -249,8 +249,8 @@ async ValueTask&#160;</td><td class="memItemRight" valign="bottom"><b>DisposeAsy
 
 </div>
 </div>
-<a id="aef502cc559d7cf189957fb593d951e4a" name="aef502cc559d7cf189957fb593d951e4a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef502cc559d7cf189957fb593d951e4a">&#9670;&#160;</a></span>ReadClient() <span class="overload">[2/2]</span></h2>
+<a id="ad7afc32f3e99c2c5ef2eb1efce36e0df" name="ad7afc32f3e99c2c5ef2eb1efce36e0df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7afc32f3e99c2c5ef2eb1efce36e0df">&#9670;&#160;</a></span>ReadClient() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -283,7 +283,7 @@ async ValueTask&#160;</td><td class="memItemRight" valign="bottom"><b>DisposeAsy
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>deadlineSeconds</em> = <code>120</code>, </td>
+          <td class="paramname"><em>deadlineSeconds</em> = <code>int::MaxValue</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1428,7 +1428,7 @@ async ValueTask&#160;</td><td class="memItemRight" valign="bottom"><b>DisposeAsy
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Sep 19 2024 16:43:40 for dataPARC.Store SDK by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
+Generated on Thu Sep 26 2024 15:59:40 for dataPARC.Store SDK by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
 </small></address>
 </body>
 </html>

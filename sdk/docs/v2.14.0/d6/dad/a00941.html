@@ -94,12 +94,12 @@ var searchBox = new SearchBox("searchBox", "../../search/",'.html');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1b772a69de5c7264fa3697ad03b32dc7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dad/a00941.html#a1b772a69de5c7264fa3697ad03b32dc7">ConfigurationClient</a> ((string host, int port)[] servers, ICertificateValidation certificateValidation, IAuthProvider authProvider=null, bool enableInternalLogMessages=false, int deadlineSeconds=120, int avgFailoverMinutes=5)</td></tr>
-<tr class="memdesc:a1b772a69de5c7264fa3697ad03b32dc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the ConfigurationClient class with an array of hostnames and port numbers.  <br /></td></tr>
-<tr class="separator:a1b772a69de5c7264fa3697ad03b32dc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdbfbf4054bd483d67bccdc73e463307"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dad/a00941.html#afdbfbf4054bd483d67bccdc73e463307">ConfigurationClient</a> (string host, int port, ICertificateValidation certificateValidation, IAuthProvider authProvider=null, bool enableInternalLogMessages=false, int deadlineSeconds=120)</td></tr>
-<tr class="memdesc:afdbfbf4054bd483d67bccdc73e463307"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the ConfigurationClient class with a hostname and port number.  <br /></td></tr>
-<tr class="separator:afdbfbf4054bd483d67bccdc73e463307"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2075b1decb5faad07bc560b80eb7f1b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dad/a00941.html#aa2075b1decb5faad07bc560b80eb7f1b">ConfigurationClient</a> ((string host, int port)[] servers, ICertificateValidation certificateValidation, IAuthProvider authProvider=null, bool enableInternalLogMessages=false, int deadlineSeconds=int.MaxValue, int avgFailoverMinutes=5)</td></tr>
+<tr class="memdesc:aa2075b1decb5faad07bc560b80eb7f1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the ConfigurationClient class with an array of hostnames and port numbers.  <br /></td></tr>
+<tr class="separator:aa2075b1decb5faad07bc560b80eb7f1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab56b45c47bc4eee4f715f067c27c3293"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dad/a00941.html#ab56b45c47bc4eee4f715f067c27c3293">ConfigurationClient</a> (string host, int port, ICertificateValidation certificateValidation, IAuthProvider authProvider=null, bool enableInternalLogMessages=false, int deadlineSeconds=int.MaxValue)</td></tr>
+<tr class="memdesc:ab56b45c47bc4eee4f715f067c27c3293"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the ConfigurationClient class with a hostname and port number.  <br /></td></tr>
+<tr class="separator:ab56b45c47bc4eee4f715f067c27c3293"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fe9d0941a2cb49b40b147c580f0d942"><td class="memItemLeft" align="right" valign="top">async Task&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dad/a00941.html#a7fe9d0941a2cb49b40b147c580f0d942">CheckConnectionAsync</a> (int? deadlineSeconds=10, CancellationToken cancellationToken=default)</td></tr>
 <tr class="memdesc:a7fe9d0941a2cb49b40b147c580f0d942"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the client can connect to the server. This doesn't not indicate an always open connection between this client and the server, but only that it can make a connection without failing.  <br /></td></tr>
 <tr class="separator:a7fe9d0941a2cb49b40b147c580f0d942"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -205,8 +205,8 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>FailoverConnection<
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides methods for reading and writing configurations. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="afdbfbf4054bd483d67bccdc73e463307" name="afdbfbf4054bd483d67bccdc73e463307"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afdbfbf4054bd483d67bccdc73e463307">&#9670;&#160;</a></span>ConfigurationClient() <span class="overload">[1/2]</span></h2>
+<a id="ab56b45c47bc4eee4f715f067c27c3293" name="ab56b45c47bc4eee4f715f067c27c3293"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab56b45c47bc4eee4f715f067c27c3293">&#9670;&#160;</a></span>ConfigurationClient() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -245,7 +245,7 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>FailoverConnection<
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>deadlineSeconds</em> = <code>120</code>&#160;</td>
+          <td class="paramname"><em>deadlineSeconds</em> = <code>int::MaxValue</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -270,8 +270,8 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>FailoverConnection<
 
 </div>
 </div>
-<a id="a1b772a69de5c7264fa3697ad03b32dc7" name="a1b772a69de5c7264fa3697ad03b32dc7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b772a69de5c7264fa3697ad03b32dc7">&#9670;&#160;</a></span>ConfigurationClient() <span class="overload">[2/2]</span></h2>
+<a id="aa2075b1decb5faad07bc560b80eb7f1b" name="aa2075b1decb5faad07bc560b80eb7f1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2075b1decb5faad07bc560b80eb7f1b">&#9670;&#160;</a></span>ConfigurationClient() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -304,7 +304,7 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>FailoverConnection<
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>deadlineSeconds</em> = <code>120</code>, </td>
+          <td class="paramname"><em>deadlineSeconds</em> = <code>int::MaxValue</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1596,7 +1596,7 @@ string&#160;</td><td class="memItemRight" valign="bottom"><b>FailoverConnection<
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Sep 19 2024 16:43:40 for dataPARC.Store SDK by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
+Generated on Thu Sep 26 2024 15:59:40 for dataPARC.Store SDK by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
 </small></address>
 </body>
 </html>
