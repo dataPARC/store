@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+
+import "PublishingTypes.proto";
+import "SDKTypes.proto";
+
+option csharp_namespace = "dataPARC.Store.FrontEnd.GRPCSupport.Service";
+
+// For long running publishing calls.
+service PublishingService {
+  // Receive published values for tags as the tag's values are updated.
+  rpc TagPublishing(stream TagPublishingRequests) returns (stream TagPublishingResults);
+}

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+option csharp_namespace = "dataPARC.Store.FrontEnd.GRPCSupport.Service";
+
+// OAuth settings for a secured service.
+message ServerOAuthSettings {
+  string ClientId = 1;
+  string Authority = 2;
+  string RegistrationToken = 3;
+  repeated string Scopes = 4;
+  map<string, string> Entries = 5;
+  bool IsSecured = 6;
+}
+
+// For auth. related service calls.
+service AuthService {
+  // Get the auth settings, i.e. IsSecured, ClientId, etc.
+  rpc RetrieveAuthInformation(google.protobuf.Empty) returns (ServerOAuthSettings) {
+    option (google.api.http) = {
+      get : "/auth-info"
+    };
+  }
+}
