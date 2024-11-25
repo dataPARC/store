@@ -56,7 +56,7 @@ int port = 12340;
 await using var readClient = new ReadClient(host, port, CertificateValidation.AcceptAllCertificates);
 
 // Create a WriteClient with a path to a local unix socket.
-await using var writeClient = new WriteClient(host, port, CertificateValidation.AcceptAllCertificates);
+await using var writeClient = new WriteClient(path, CertificateValidation.AcceptAllCertificates);
 
 // Create a ClientFactory instead of creating multiple clients at once. This takes the same args required to create clients. Then any of the available clients can be accessed as properties that lazily create the clients.
 await using var clientFactory = new ClientFactory(host, port, CertificateValidation.AcceptAllCertificates);
