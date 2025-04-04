@@ -142,6 +142,9 @@ var started = pubClient.Publishing;
 // if a server can be reached.
 ```
 
+> **Tip**  
+> Instead of calling CheckConnectionAsync prior to making a call as an indicator if you should make the call or not, instead attempt the call and handle the exception in the case the the server can't be reached. Most calls wrap these exceptions into result objects with a message indicating if the server couldn't be reached. Not only does this save the time spent checking the connection before you make the call, it doesn't indicate that the server will still be online and available after checking the connection and by the time you start the call. The server can become unavailable between a successful call to CheckConnectionAsync and starting another call.
+
 > **Note**  
 > A connection is NOT made to a server when a client is instantiated. Instead, the connection is made when the first call is made on a client. Do not use the client constructors to check if a server can be reached. Also, the clients do not keep an open connection to the server once it has been created. Instead, the connection is used as calls are in progress only. If the server goes offline between calls from a client, then comes online again before the next call is started, the client will connect again as if the server never went offline.
 
