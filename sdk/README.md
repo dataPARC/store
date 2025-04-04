@@ -4,7 +4,7 @@ A .NET library for creating clients for the dataPARC.Store historian
 
 ## Documentation
 
-See the [docs](https://dataparc.github.io/store/sdk/docs/v2.14.0/) for full API reference.
+See the [docs](https://dataparc.github.io/store/sdk/docs/v2.15.2/) for full API reference of the latest version.
 
 ## Prerequisites
 
@@ -41,13 +41,20 @@ With the feed configured, add a nuget reference to dataPARC.Store.SDK
 - [Reading Processed Data](#reading-processed-data)
 - [Reading Processed Data By Config](#reading-processed-data-by-config)
 - [Reading Array Data](#reading-array-data)
-- [Using DataPoints From Read Responses](#using-datapoints-from-read-responses)
-- [Tag Publishing](#tag-publishing)
+- [Using DataPoints From Reads](#using-datapoints-from-reads)
+- [Publishing](#publishing)
+- [Current Values](#current-values)
 
 ### Clients
 
 ```cs
-// Create clients that have methods for calling historian functions. There are 4 client classes: ReadClient, WriteClient, ConfigurationClient, and PublishingClient. Each client can be created separately, or by using the ClientFactory.
+// Create clients that have methods for calling historian functions. There are 5 client classes:
+//   - ReadClient
+//   - WriteClient
+//   - ConfigurationClient
+//   - PublishingClient
+//   - CurrentValuesClient
+// Each client can be created separately, or by using the ClientFactory.
 
 // Create a ReadClient with a hostname, port number, and a certificate validator.
 string host = "hostname";
@@ -58,14 +65,18 @@ await using var readClient = new ReadClient(host, port, CertificateValidation.Ac
 // Create a WriteClient with a path to a local unix socket.
 await using var writeClient = new WriteClient(path, CertificateValidation.AcceptAllCertificates);
 
-// Create a ClientFactory instead of creating multiple clients at once. This takes the same args required to create clients. Then any of the available clients can be accessed as properties that lazily create the clients.
+// Create a ClientFactory instead of creating multiple clients at once. This takes the same args
+// required to create clients. Then any of the available clients can be accessed as properties that
+// lazily create the clients.
 await using var clientFactory = new ClientFactory(host, port, CertificateValidation.AcceptAllCertificates);
 
-// No need for using contexts when referencing these clients since the client factory owns them and is itself being used in a using context.
+// No need for using contexts when referencing these clients since the client factory owns them and
+// is itself being used in a using context.
 var readClient2 = clientFactory.ReadClient;
 var writeClient2 = clientFactory.WriteClient;
 var configClient = clientFactory.ConfigurationClient;
 var pubClient = clientFactory.PublishingClient;
+var cvClient = clientFactory.CurrentValuesClient;
 
 // Subsequent references to the ClientFactory's client properties will return the same instance.
 var isSame = readClient2 == clientFactory.ReadClient; // isSame = true
@@ -74,7 +85,11 @@ var isSame = readClient2 == clientFactory.ReadClient; // isSame = true
 ### Failover
 
 ```cs
-// Reading calls support failover to backup servers if the primary server becomes unavailable. The primary server is the first server specified in the array of servers. Reading calls include reading configurations, data, and publishing. Read calls will automatically try again on a backup server. Upon switching to a backup server, the client will wait about 3 minutes before trying to reconnect to the primary server. As many backup servers as needed can be added.
+// Reading calls support failover to backup servers if the primary server becomes unavailable. The
+// primary server is the first server specified in the array of servers. Reading calls include
+// reading configurations, data, and publishing. Read calls will automatically try again on a backup
+// server. Upon switching to a backup server, the client will wait about 3 minutes before trying to
+// reconnect to the primary server. As many backup servers as needed can be added.
 
 var servers = new[]
 {
@@ -89,11 +104,16 @@ await using var client = new ReadClient(servers, CertificateValidation.AcceptAll
 ### Authorization
 
 ```cs
-// When creating clients, you are required to pass in an ICertificateValidation that is used to validate the server's certificate. This can be a custom validator as long as it implements ICertificateValidation.
+// When creating clients, you are required to pass in an ICertificateValidation that is used to
+// validate the server's certificate. This can be a custom validator as long as it implements
+// ICertificateValidation.
 ICertificateValidation certVal = CertificateValidation.DefaultHttpClientHandlerValidator;
 await using var readClient = new ReadClient(hostname, port, certVal);
 
-// The other auth related parameter the clients have is an optional IAuthProvider that is used to get access tokens from a token provider. This can also be a custom provider as long as it implements IAuthProvider. This is optional since a historian might have security turned off, but is required to talk to secured historians.
+// The other auth related parameter the clients have is an optional IAuthProvider that is used to get
+// access tokens from a token provider. This can also be a custom provider as long as it implements
+// IAuthProvider. This is optional since a historian might have security turned off, but is required
+// to talk to secured historians.
 var token = AuthProviderFactory.StartDeviceCodeFlow("authority", "client_id", "scope", res =>
 {
     // Pass info from res to user/caller to run device code flow.
@@ -105,19 +125,31 @@ await using var writeClient = new WriteClient(hostname, port, certVal, provider)
 ### Connections
 
 ```cs
-// The reading, writing, and configuration clients have a CheckConnectionAsync method that acts like a ping by trying to connect to a historian server.
+// The reading, writing, and configuration clients have a CheckConnectionAsync method that acts like
+// a ping by trying to connect to a historian server.
 await using var configClient = new ConfigurationClient(hostname, port, CertificateValidation.AcceptAllCertificates);
 var connected = await configClient.CheckConnectionAsync();
 
-// The publishing client instead has a Publishing property that indicates if tag publishing has been started. For long running operations such as tag publishing, connections might become transient in changing network conditions, but the publishing client will recover and continue working.
+// The publishing and current values clients instead have a Publishing property that indicates if
+// tag publishing has been started. For long running operations such as tag publishing, connections
+// might become transient in changing network conditions, but the publishing client will recover and
+// continue working.
 await using var pubClient = new PublishingClient(hostname, port, CertificateValidation.AcceptAllCertificates);
 var started = pubClient.Publishing;
+
+// Note: a connection is NOT made to a server when a client is instantiated. Instead, the connection
+// is made when the first call is made on a client. Do not use the client constructors to check
+// if a server can be reached.
 ```
 
-### Historian Paths
+> **Note**  
+> A connection is NOT made to a server when a client is instantiated. Instead, the connection is made when the first call is made on a client. Do not use the client constructors to check if a server can be reached. Also, the clients do not keep an open connection to the server once it has been created. Instead, the connection is used as calls are in progress only. If the server goes offline between calls from a client, then comes online again before the next call is started, the client will connect again as if the server never went offline.
+
+### History Paths
 
 ```cs
-// Historian paths are a path to a location for the historian to store data, i.e. directory path, network path. etc.
+// History paths are a path to a location for the historian to store data, i.e. directory path,
+// network path. etc.
 
 // Save a new historian path.
 var newPath = new HistorianPathConfig("Path1", @"C:\History") {
@@ -128,18 +160,21 @@ await using var client = new ConfigurationClient(hostname, port, CertificateVali
 
 var saveRes = await client.SaveHistorianPathAsync(newPath);
 
-// When saving configs, the saved configs are returned wrapped in a SaveResult<T>. This provides a status for the save operation, the saved values, and more.
+// When saving configs, the saved configs are returned wrapped in a SaveResult<T>. This provides a
+// status for the save operation, the saved values, and more.
 if (saveRes.Status == SaveResultStatus.DataSaved) {
     var savedPath = saveRes.SavedValue; // Historian path saved successfully.
     var pathId = savedPath.Id; // Ids are assigned by the server upon successfully saving configs.
 } else {
-    // Something went wrong, check against other SaveResultStatus cases for more info. Warnings and errors that may occur when saving configs are included in the SaveResult.
+    // Something went wrong, check against other SaveResultStatus cases for more info. Warnings and
+    // errors that may occur when saving configs are included in the SaveResult.
 }
 
 // Read all historian paths.
 var readRes = await client.GetHistorianPathsAsync();
 
-// When reading configs, the configs are returned wrapped in a GetResult<T>. This provides a status for the read operation, the values read if successful, and more.
+// When reading configs, the configs are returned wrapped in a GetResult<T>. This provides a status
+// for the read operation, the values read if successful, and more.
 if (readRes.Status == GetResultStatus.Successful) {
     var paths = readRes.Value; // All historian paths read successfully.
 } else {
@@ -150,26 +185,28 @@ if (readRes.Status == GetResultStatus.Successful) {
 ### Interface Groups
 
 ```cs
-// Interface groups are the top level entity in the historian. All interfaces, interface sets, and tags must belong to
-// an interface group.
+// Interface groups are the top level entity in the historian. All interfaces, interface sets, and
+// tags must belong to an interface group.
 
-// Save a new interface group. A group must be tied to a historian path to use as it's default path to store data, so we need
-// a historian path Id.
+// Save a new interface group. A group must be tied to a historian path to use as it's default path
+// to store data, so we need a historian path Id.
 await using var client = new ConfigurationClient(hostname, port, CertificateValidation.AcceptAllCertificates);
 var pathsRes = await client.GetHistorianPathsAsync();
 
-// Assuming pathsRes.Status == GetResultStatus.Successful... See HistorianPaths for more on GetResults and SaveResults.
+// Assuming pathsRes.Status == GetResultStatus.Successful... See HistorianPaths for more on
+// GetResults and SaveResults.
 var pathId = pathsRes.Value[0].Id;
 
 var newGroup = new InterfaceGroupConfig("Group1", pathId, TimeZoneInfo.Local.StandardName);
 var saveRes1 = await client.SaveInterfaceGroupAsync(newGroup);
 
-// Save multiple interface groups. For example only, saving the same group already saved above will fail.
+// Save multiple interface groups. For example only, saving the same group already saved above will
+// fail.
 List<InterfaceGroupConfig> newGroups = [newGroup];
 var saveRes2 = await client.SaveInterfaceGroupsAsync(newGroups);
 
-// Read a single interface group.
-var groupQuery = new InterfaceGroupQueryIdentifier(id: 1); // You can also query groups by name or by GUID.
+// Read a single interface group. You can also query groups by name orby GUID.
+var groupQuery = new InterfaceGroupQueryIdentifier(id: 1);
 var readRes1 = await client.GetInterfaceGroupAsync(groupQuery);
 
 // Read all interface groups.
@@ -181,11 +218,13 @@ var readRes2 = await client.GetInterfaceGroupsAsync();
 ```cs
 // Interfaces are a grouping of tags. Every tag must belong to one interface.
 
-// Save a new interface. An interface must be tied to an interface group, so we need an interface group Id.
+// Save a new interface. An interface must be tied to an interface group, so we need an interface
+// group Id.
 await using var client = new ConfigurationClient(hostname, port, CertificateValidation.AcceptAllCertificates);
 var groupsRes = await client.GetInterfaceGroupsAsync();
 
-// Assuming groupsRes.Status == GetResultStatus.Successful... See HistorianPaths for more on GetResults and SaveResults.
+// Assuming groupsRes.Status == GetResultStatus.Successful... See HistorianPaths for more on
+// GetResults and SaveResults.
 var groupId = groupsRes.Value[0].Id;
 
 var newInterface = new InterfaceConfig("Interface1", groupId);
@@ -195,12 +234,12 @@ var saveRes1 = await client.SaveInterfaceAsync(newInterface);
 List<InterfaceConfig> newInterfaces = [newInterface];
 var saveRes2 = await client.SaveInterfacesAsync(newInterfaces);
 
-// Read a single interface.
-var interfaceQuery = new InterfaceQueryIdentifier(id: 1); // You can also query interfaces by fully qualified name or by GUID.
+// Read a single interface. You can also query interfaces by fully qualified name or by GUID.
+var interfaceQuery = new InterfaceQueryIdentifier(id: 1);
 var readRes1 = await client.GetInterfaceAsync(interfaceQuery);
 
-// Read all interfaces in an interface group.
-var groupQuery = new InterfaceGroupQueryIdentifier(id: 1); // You can also query groups by name or by GUID.
+// Read all interfaces in an interface group. You can also query groups by name or by GUID.
+var groupQuery = new InterfaceGroupQueryIdentifier(id: 1);
 var readRes2 = await client.GetInterfacesByInterfaceGroupAsync(groupQuery);
 
 // Read all interfaces in all interface groups.
@@ -212,20 +251,23 @@ var readRes3 = await client.GetInterfacesAsync();
 ```cs
 // Interface sets are a grouping of interfaces within the same interface group.
 
-// Save a new interface set. An interface set must be tied to an interface group, so we need an interface group Id.
+// Save a new interface set. An interface set must be tied to an interface group, so we need an
+// interface group Id.
 await using var client = new ConfigurationClient(hostname, port, CertificateValidation.AcceptAllCertificates);
 var groupsRes = await client.GetInterfaceGroupsAsync();
 
-// Assuming groupsRes.Status == GetResultStatus.Successful... See HistorianPaths for more on GetResults and SaveResults.
+// Assuming groupsRes.Status == GetResultStatus.Successful... See HistorianPaths for more on
+// GetResults and SaveResults.
 var groupId = groupsRes.Value[0].Id;
 
 var newInterfaceSet = new InterfaceSetConfig("Set1", groupId);
 var saveRes1 = await client.SaveInterfaceSetAsync(newInterfaceSet);
 var interfaceSet = saveRes1.SavedValue;
 
-// We can then add interfaces to the interface set. We need to get the interfaces for this interface group. Some or all
-// interfaces in the same interface group can be added to an interface set. One interface group can have multiple
-// interface sets but each interface can only belong to one interface set.
+// We can then add interfaces to the interface set. We need to get the interfaces for this interface
+// group. Some or all interfaces in the same interface group can be added to an interface set. One
+// interface group can have multiple interface sets but each interface can only belong to one
+// interface set.
 var interfacesRes = await client.GetInterfacesByInterfaceGroupAsync(new InterfaceGroupQueryIdentifier(groupId));
 var interfaces = interfacesRes.Value;
 var setInterfaces = interfaces.Select(i => new InterfaceSetInterfaceConfig(i.Id, interfaceSet.Id)).ToList();
@@ -237,12 +279,12 @@ var saveRes2 = await client.SaveInterfaceSetInterfacesAsync(setInterfaces);
 List<InterfaceSetConfig> newInterfaceSets = [newInterfaceSet];
 var saveRes3 = await client.SaveInterfaceSetsAsync(newInterfaceSets);
 
-// Read a single interface set.
-var interfaceSetQuery = new InterfaceSetQueryIdentifier(id: 1); // You can also query interfaces sets by fully qualified name or by GUID.
+// Read a single interface set. You can also query interfaces setsby fully qualified name or by GUID.
+var interfaceSetQuery = new InterfaceSetQueryIdentifier(id: 1);
 var readRes1 = await client.GetInterfaceSetAsync(interfaceSetQuery);
 
-// Read all interface sets in an interface group.
-var groupQuery = new InterfaceGroupQueryIdentifier(id: 1); // You can also query groups by name or by GUID.
+// Read all interface sets in an interface group. You can also query groups by name or by GUID.
+var groupQuery = new InterfaceGroupQueryIdentifier(id: 1);
 var readRes2 = await client.GetInterfaceSetsByInterfaceGroupAsync(groupQuery);
 
 // Read all interface sets in all interface groups.
@@ -258,7 +300,8 @@ var readRes3 = await client.GetInterfaceSetsAsync();
 await using var client = new ConfigurationClient(hostname, port, CertificateValidation.AcceptAllCertificates);
 var interfacesRes = await client.GetInterfacesAsync();
 
-// Assuming interfacesRes.Status == GetResultStatus.Successful... See HistorianPaths for more on GetResults and SaveResults.
+// Assuming interfacesRes.Status == GetResultStatus.Successful... See HistorianPaths for more on
+// GetResults and SaveResults.
 var interfaceId = interfacesRes.Value[0].Id;
 
 var newTag = new TagConfig("Tag1", dataPARC.TimeSeries.Core.Enums.ValueType.Single, interfaceId);
@@ -268,11 +311,12 @@ var saveRes1 = await client.SaveTagAsync(newTag);
 List<TagConfig> newTags = [newTag];
 var saveRes2 = await client.SaveTagsAsync(newTags);
 
-// Read a single tag.
-var tagQuery = new TagQueryIdentifier(id: 1); // You can also query tags by fully qualified name or by GUID.
+// Read a single tag. You can also query tags by fully qualified name or by GUID.
+var tagQuery = new TagQueryIdentifier(id: 1);
 var readRes1 = await client.GetTagAsync(tagQuery);
 
-// Read all tags in an interface. You can also read all tags in an interface set.
+// Read all tags in an interface. You can also read all tags in an interface set or all tags
+// regardless of interface interface set, or interface group.
 var readParams = new ReadTagListParameters(new InterfaceQueryIdentifier(1));
 var readRes2 = await client.GetTagsAsync(readParams);
 ```
@@ -285,18 +329,24 @@ await using var client = new WriteClient(hostname, port, CertificateValidation.A
 // Write multiple datapoints of the same type.
 TagDataPointSingle[] points =
 [
-    new TagDataPointSingle(1, DateTime.UtcNow, Quality.Good, true, 1.1f),
-    new TagDataPointSingle(1, DateTime.UtcNow, Quality.Good, true, 1.2f),
-    new TagDataPointSingle(1, DateTime.UtcNow, Quality.Good, true, 1.3f),
+    // Multiple datapoints for the same tag, tag 1.
+    new TagDataPointSingle(1, DateTime.UtcNow.AddSeconds(-3), Quality.Good, true, 1.1f),
+    new TagDataPointSingle(1, DateTime.UtcNow.AddSeconds(-2), Quality.Good, true, 1.2f),
+    new TagDataPointSingle(1, DateTime.UtcNow.AddSeconds(-1), Quality.Good, true, 1.3f),
+
+    // Multiple datapoints for different tags.
+    new TagDataPointSingle(2, DateTime.UtcNow, Quality.Good, true, 1.1f),
+    new TagDataPointSingle(3, DateTime.UtcNow, Quality.Good, true, 1.2f),
+    new TagDataPointSingle(4, DateTime.UtcNow, Quality.Good, true, 1.3f),
 ];
 
-// The awaitCompletion parameter determines if the write call should wait for the data to be fully written before returning or if it should return as soon as it determines if the data can be written or not. The default is false.
+// The awaitCompletion parameter determines if the write call should wait for the data to be fully
+// written before returning or if it should return as soon as it determines if the data can be
+// written or not. The default is false since the client receives a response faster.
 var writeRes1 = await client.WriteDataPointsAsync(points, awaitCompletion: false);
 
-// Write a single datapoint.
-var writeRes2 = await client.WriteDataPointAsync(points[0]);
-
-// Write multiple datapoints of different types. Add both the points from above and some points of a different type to a TagDataPointSet.
+// Write multiple datapoints of different types. Add both the points from above and some points of a
+// different type to a TagDataPointSet.
 TagDataPointDouble[] doublePoints =
 [
     new TagDataPointDouble(1, DateTime.UtcNow.AddMinutes(-3), Quality.Good, true, 2.1),
@@ -307,7 +357,13 @@ var pointSet = new TagDataPointSet(points);
 pointSet.Add(doublePoints);
 
 var writeRes3 = await client.WriteDataPointSetAsync(pointSet);
+
+// Write a single datapoint.
+var writeRes2 = await client.WriteDataPointAsync(points[0]);
 ```
+
+> **Warning**  
+> This method should NOT be used when multiple points need to be written. If multiple points need to be written and they are all the same type, use WriteDataPointsAsync. If they're not all the same type, use WriteDataPointSet. This method should only be used for writing 1-off datapoints./ Calling this method repeatedly to write multiple datapoints not only leads to bad performance, it can degrade performance of the server for your overall client and possibly other clients.
 
 ### Deleting Data
 
@@ -322,7 +378,9 @@ List<DateTime> timestamps =
     DateTime.UtcNow.AddMinutes(-2),
 ];
 
-// The awaitCompletion parameter determines if the delete call should wait for the data to be fully deleted before returning or if it should return as soon as it determines if the data can be deleted or not. The default is false.
+// The awaitCompletion parameter determines if the delete call should wait for the data to be fully
+// deleted before returning or if it should return as soon as it determines if the data can be
+// deleted or not. The default is false.
 var deleteStatus1 = await client.DeleteDataAsync(1, timestamps, awaitCompletion: false);
 
 // Delete data in a time range.
@@ -361,7 +419,8 @@ var readParams1 = new ReadAtTimeParameters(new TagQueryIdentifier(1), DateTime.U
 var readRes1 = await client.ReadAtTimeAsync(readParams1);
 
 if (readRes1.Status == ReadAtTimeStatus.Successful) {
-    // The value at the timestamp request. DataPoints is an array because multiple timestamps can be requested.
+    // The value at the timestamp request. DataPoints is an array because multiple timestamps can be
+    // requested.
     var point = readRes1.DataPoints[0];
 } else {
     // Something went wrong, check against other ReadAtTimeStatus cases for more info.
@@ -399,15 +458,17 @@ foreach (var res in readRes2) {
     // Each tag requested is returned in the same object as the singular ReadRawAsync call.
 }
 
-// Read a count of raw data points for a single tag. This doesn't load all the data on the client and instead just returns
-// a count from the server.
+// Read a count of raw data points for a single tag. This doesn't load all the data on the client
+// and instead just returns a count from the server.
 var readRes3 = await client.ReadRawCountAsync(readParams1);
 
 if (readRes3.Status == ReadCountStatus.Successful) {
-    var cnt = readRes3.Count; // The number of raw datapoints for the last month from the tag with Id 1.
+    // The number of raw datapoints for the last month from the tag with Id 1.
+    var cnt = readRes3.Count;
 }
 
-// Read a specified number of datapoints either forwards or backwards from a starting timestamp for a single tag.
+// Read a specified number of datapoints either forwards or backwards from a starting timestamp for
+// a single tag.
 var readParams2 = new DirectionalReadRawParameters(new TagQueryIdentifier(1), DateTime.UtcNow, Direction.Backwards, 25);
 var readRes4 = await client.DirectionalReadRawAsync(readParams2);
 
@@ -415,9 +476,9 @@ if (readRes4.Status == ReadRawStatus.Successful) {
     var points = readRes1.DataPoints; // The 25 most recent datapoints from the tag with Id 1.
 }
 
-// Stream raw data for a single tag. Streaming is equivalent to reading in the data it can return, but it starts returning
-// data faster since the server sends data into the stream as soon as it starts reading it. It also provides more flexibility
-// around client memory constraints.
+// Stream raw data for a single tag. Streaming is equivalent to reading in the data it can return,
+// but it starts returning data faster since the server sends data into the stream as soon as it
+// starts reading it. It also provides more flexibility around client memory constraints.
 var streamParams1 = new StreamRawParameters(new TagQueryIdentifier(1), DateTime.UtcNow.AddMonths(-1), DateTime.UtcNow);
 var streamRes1 = await client.StreamRawAsync(streamParams1);
 
@@ -426,7 +487,8 @@ if (streamRes1.Status == ReadRawStatus.Successful) {
     }
 }
 
-// Stream a specified number of datapoints either forwards or backwards from a starting timestamp for a single tag.
+// Stream a specified number of datapoints either forwards or backwards from a starting timestamp
+// for a single tag.
 var streamParams2 = new DirectionalStreamRawParameters(new TagQueryIdentifier(1), DateTime.UtcNow, Direction.Backwards, 25);
 var streamRes4 = await client.DirectionalStreamRawAsync(streamParams2);
 
@@ -453,7 +515,8 @@ var readParams1 = new ReadProcessedParameters(
 var readRes1 = await client.ReadProcessedAsync(readParams1);
 
 if (readRes1.Status == ReadProcessedStatus.Successful) {
-    var points = readRes1.DataPoints; // The 5 minute time averages for the last month from the tag with Id 1.
+    // The 5 minute time averages for the last month from the tag with Id 1.
+    var points = readRes1.DataPoints;
 } else {
     // Something went wrong, check against other ReadProcessedStatus cases for more info.
 }
@@ -464,15 +527,17 @@ foreach (var res in readRes2) {
     // Each tag requested is returned in the same object as the singular ReadProcessedAsync call.
 }
 
-// Read a count of processed data points for a single tag. This doesn't load all the data on the client and instead just returns
-// a count from the server.
+// Read a count of processed data points for a single tag. This doesn't load all the data on the
+// client and instead just returns a count from the server.
 var readRes3 = await client.ReadProcessedCountAsync(readParams1);
 
 if (readRes3.Status == ReadCountStatus.Successful) {
-    var cnt = readRes3.Count; // The number of 5 minute time averages for the last month from the tag with Id 1.
+    // The number of 5 minute time averages for the last month from the tag with Id 1.
+    var cnt = readRes3.Count;
 }
 
-// Read a specified number of datapoints either forwards or backwards from a starting timestamp for a single tag.
+// Read a specified number of datapoints either forwards or backwards from a starting timestamp for
+// a single tag.
 var readParams2 = new DirectionalReadProcessedParameters(
     new TagQueryIdentifier(1),
     DateTime.UtcNow,
@@ -485,12 +550,13 @@ var readParams2 = new DirectionalReadProcessedParameters(
 var readRes4 = await client.DirectionalReadProcessedAsync(readParams2);
 
 if (readRes4.Status == ReadProcessedStatus.Successful) {
-    var points = readRes1.DataPoints; // The 25 most recent 5 minutes time averages from the tag with Id 1.
+    // The 25 most recent 5 minutes time averages from the tag with Id 1.
+    var points = readRes1.DataPoints;
 }
 
-// Stream processed data for a single tag. Streaming is equivalent to reading in the data it can return, but it starts returning
-// data faster since the server sends data into the stream as soon as it starts reading it. It also provides more flexibility
-// around client memory constraints.
+// Stream processed data for a single tag. Streaming is equivalent to reading in the data it can
+// return, but it starts returning data faster since the server sends data into the stream as soon
+// as it starts reading it. It also provides more flexibility around client memory constraints.
 var streamParams1 = new StreamProcessedParameters(
     new TagQueryIdentifier(1),
     DateTime.UtcNow.AddMonths(-1),
@@ -506,7 +572,8 @@ if (streamRes1.Status == ReadProcessedStatus.Successful) {
     }
 }
 
-// Stream a specified number of datapoints either forwards or backwards from a starting timestamp for a single tag.
+// Stream a specified number of datapoints either forwards or backwards from a starting timestamp for
+// a single tag.
 var streamParams2 = new DirectionalStreamProcessedParameters(
     new TagQueryIdentifier(1),
     DateTime.UtcNow,
@@ -538,7 +605,8 @@ var readParams1 = new ReadProcessedByConfigParameters(
 var readRes1 = await client.ReadProcessedByConfigAsync(readParams1);
 
 if (readRes1.Status == ReadProcessedStatus.Successful) {
-    var points = readRes1.DataPoints; // The 5 minute time averages for the last month from the tag with Id 1.
+    // The 5 minute time averages for the last month from the tag with Id 1.
+    var points = readRes1.DataPoints;
 } else {
     // Something went wrong, check against other ReadProcessedStatus cases for more info.
 }
@@ -549,16 +617,16 @@ foreach (var res in readRes2) {
     // Each tag requested is returned in the same object as the singular ReadProcessedAsync call.
 }
 
-// Read a count of processed data points for a single tag using a preconfigured aggregate. This doesn't load all the data
-// on the client and instead just returns a count from the server.
+// Read a count of processed data points for a single tag using a preconfigured aggregate. This
+// doesn't load all the data on the client and instead just returns a count from the server.
 var readRes3 = await client.ReadProcessedByConfigCountAsync(readParams1);
 
 if (readRes3.Status == ReadCountStatus.Successful) {
     var cnt = readRes3.Count; // The number of 5 minute time averages for the last month from the tag with Id 1.
 }
 
-// Read a specified number of datapoints either forwards or backwards from a starting timestamp for a single tag using a
-// preconfigured aggregate.
+// Read a specified number of datapoints either forwards or backwards from a starting timestamp for
+// a single tag using a preconfigured aggregate.
 var readParams2 = new DirectionalReadProcessedByConfigParameters(
     new TagQueryIdentifier(1),
     DateTime.UtcNow,
@@ -568,12 +636,14 @@ var readParams2 = new DirectionalReadProcessedByConfigParameters(
 var readRes4 = await client.DirectionalReadProcessedByConfigAsync(readParams2);
 
 if (readRes4.Status == ReadProcessedStatus.Successful) {
-    var points = readRes1.DataPoints; // The 25 most recent 5 minutes time averages from the tag with Id 1.
+    // The 25 most recent 5 minutes time averages from the tag with Id 1.
+    var points = readRes1.DataPoints;
 }
 
-// Stream processed data for a single tag using a preconfigured aggregate. Streaming is equivalent to reading in the data it
-// can return, but it starts returning data faster since the server sends data into the stream as soon as it starts reading
-// it. It also provides more flexibility around client memory constraints.
+// Stream processed data for a single tag using a preconfigured aggregate. Streaming is equivalent
+// to reading in the data it can return, but it starts returning data faster since the server sends
+// data into the stream as soon as it starts reading it. It also provides more flexibility around
+// client memory constraints.
 var streamParams1 = new StreamProcessedByConfigParameters(
     new TagQueryIdentifier(1),
     DateTime.UtcNow.AddMonths(-1),
@@ -586,8 +656,8 @@ if (streamRes1.Status == ReadProcessedStatus.Successful) {
     }
 }
 
-// Stream a specified number of datapoints either forwards or backwards from a starting timestamp for a single tag using a
-// preconfigured aggregate.
+// Stream a specified number of datapoints either forwards or backwards from a starting timestamp for
+// a single tag using a preconfigured aggregate.
 var streamParams2 = new DirectionalStreamProcessedByConfigParameters(
     new TagQueryIdentifier(1),
     DateTime.UtcNow,
@@ -605,7 +675,8 @@ if (streamRes4.Status == ReadProcessedStatus.Successful) {
 ### Reading Array Data
 
 ```cs
-// All read call support 2 additional parameters for slicing array tags: arrayStartIndex and arrayLength.
+// All read call support 2 additional parameters for slicing array tags: arrayStartIndex and
+// arrayLength.
 
 await using var client = new ReadClient(hostname, port, CertificateValidation.AcceptAllCertificates);
 
@@ -621,12 +692,12 @@ var readRes = await client.ReadRawAsync(readParams);
 var points = readRes.DataPoints;
 ```
 
-### Using DataPoints From Read Responses
+### Using DataPoints From Reads
 
 ```cs
 // All read calls return datapoints in 1 of 2 types: DataPoints or IDataPoint
-//      DataPoints: an array of 1 of multiple types of datapoints, i.e. one of DataPointSingle[], DataPointByte[], etc.
-//      IDataPoint: 1 of datapoint types, i.e. one of DataPointSingle, DataPointByte, etc.
+//      DataPoints: an array of 1 type of datapoints, i.e. DataPointSingle[], DataPointByte[], etc.
+//      IDataPoint: DataPointSingle, DataPointByte, etc.
 
 // To use DataPoints, first mock up some datapoint returned from a read call:
 DataPoints datapoints = new[] {
@@ -636,11 +707,13 @@ DataPoints datapoints = new[] {
 };
 
 
-// When you know the type of datapoints returned, you can grab them by property. This is best case in terms of performance.
+// When you know the type of datapoints returned, you can grab them by property. This is best case in
+// terms of performance.
 DataPointSingle[] datapointSingles = datapoints.DataPointSingles;
 
-// When you don't know the type, such as in a function that operates over any type of datapoints, you can pass in a func
-// for every type. This is how the Count property is implemented on DataPoints.
+// When you don't know the type and need an expression involving the datapoints, such as in a
+// function that operates over any type of datapoints, you can pass in a func for every type. This
+// is roughly how the Count property is implemented on DataPoints.
 var cnt = datapoints.Match(
     dpBools => dpBools.Length,
     dpBytes => dpBytes.Length,
@@ -672,7 +745,8 @@ var cnt = datapoints.Match(
     dpUInt64Arrs => dpUInt64Arrs.Length,
     dpStringArrs => dpStringArrs.Length);
 
-// When you don't know the type, you can also pass in an action for every type. This is like Match but doesn't return anything.
+// When you don't know the type and need to run statements involving the datapoints, you can also
+// pass in an action for every type. This is like Match but doesn't return anything.
 datapoints.Switch(
     dpBools => Console.WriteLine(dpBools.Length),
     dpBytes => Console.WriteLine(dpBytes.Length),
@@ -704,30 +778,32 @@ datapoints.Switch(
     dpUInt64Arrs => Console.WriteLine(dpUInt64Arrs.Length),
     dpStringArrs => Console.WriteLine(dpStringArrs.Length));
 
-// Finally, since each datapoint type implements IDataPoint, you can get an array of IDataPoint from all datapoints
-// contained in a DataPoints instance. This is least ideal when working with DataPoints since every datapoint contained is
-// boxed upon being referenced as an IDataPoint.
-// Since DataPoints implements IEnumerable<IDataPoint>, spreading it into a collection expression, calling ToArray, or
+// Finally, since each datapoint type implements IDataPoint, you can get an array of IDataPoint from
+// all datapoints contained in a DataPoints instance. This is least ideal when working with DataPoints
+// since every datapoint contained is boxed upon being referenced as an IDataPoint. Since DataPoints
+// implements IEnumerable<IDataPoint>, spreading it into a collection expression, calling ToArray, or
 // calling ToList on it will transform it into a collection of IDataPoint(s).
 IDataPoint[] idatapoints1 = [.. datapoints];
 IDataPoint[] idatapoints2 = datapoints.ToArray();
 List<IDataPoint> idatapoints3 = datapoints.ToList();
 ```
 
-### Tag Publishing
+### Publishing
+
+Timespan based publishing of raw and processed data. This client provides a request-response API that supports most of the options available with standard read calls: raw, aggregates by code, aggregates by name, digital text, array slicing, unit conversion, etc. A tag can be subscribed to multiple times to support different options, i.e. 1 subscription for unit converted values and 1 without, both for the same tag. Request-response in this case refers to each call returns the response for that call. For example, when starting a subscription for a tag, the start response is returned by the start method. Values are sent for each subscription on the interval defined with the subscription. Upon receiving values, the client will run the callback also defined with the subscription. For a contrasting API that offers different tradeoffs, see [Current Values](#current-values).
 
 ```cs
 await using var client = new PublishingClient(hostname, port, CertificateValidation.AcceptAllCertificates);
 
-// Setup a callback to run if the client connection to the server changes state. There are other callbacks for first
-// connection and disconnection as well.
+// Setup a callback to run if the client connection to the server changes state. There are other
+// callbacks for first connection and disconnection as well.
 client.OnReconnected = async () => {
     Console.WriteLine("Reconnected!");
     await Task.Delay(1000); // This callback is a Func<Task> so async code can run here.
 };
 
-// Setup a callback to run when tag data is published. This will be called by the publishing client when it receives published
-// tag data from the server.
+// Setup a callback to run when tag data is published. This will be called by the publishing client
+// when it receives published tag data from the server.
 static async ValueTask OnPublish(TagPublishingResult result) {
     Console.WriteLine($"{result.DataPoints.Count} points received");
     await Task.Delay(1000); // This callback returns a ValueTask so async code can run here.
@@ -737,9 +813,9 @@ static async ValueTask OnPublish(TagPublishingResult result) {
 var startParams1 = new StartTagPublishingParameters(new TagQueryIdentifier(1), TimeSpan.FromSeconds(5));
 var startRes1 = await client.StartPublishingAsync(startParams1, OnPublish);
 
-// Subscribe to multiple tags. Resub to the same tag for example.
-List<(StartTagPublishingParameters, Func<TagPublishingResult, ValueTask>)> startParams2 =
-[
+// Subscribe to multiple tags. You can subscribe to the same tag again with different options.
+List<(StartTagPublishingParameters, Func<TagPublishingResult, ValueTask>)> startParams2 = [
+    (new StartTagPublishingParameters(new TagQueryIdentifier(1), TimeSpan.FromSeconds(1)), OnPublish),
     (new StartTagPublishingParameters(new TagQueryIdentifier(2), TimeSpan.FromSeconds(5)), OnPublish),
     (new StartTagPublishingParameters(new TagQueryIdentifier(3), TimeSpan.FromSeconds(5)), OnPublish),
 ];
@@ -754,4 +830,62 @@ var stopRes1 = await client.StopPublishingAsync(id);
 
 // Or stop publishing for all tags.
 await client.StopPublishingAsync();
+```
+
+### Current Values
+
+Event based publishing of raw data. This client provides a stream API that supports some of the options available with standard read calls: raw, digital text, unit conversion, etc. A tag can be subscribed to multiple times to support different options, i.e. 1 subscription for raw values and 1 for numeric values, both for the same tag that has a digital text mapping defined. Stream in this case refers how requests are sent off and responses come back on an async stream. So each call does not return the response for that call. For example, when starting a subscription for a tag, the start response is not returned by the start method. Instead it is returned in the stream created by calling GetResponses. Values are sent as soon as they're available in the server's current value cache. For a contrasting API that offers different tradeoffs, see [Publishing](#publishing).
+
+```cs
+await using var client = new CurrentValuesClient(hostname, port, CertificateValidation.AcceptAllCertificates);
+
+// Setup a callback to run if the client connection to the server changes state. There are other
+// callbacks for first connection and disconnection as well.
+client.OnReconnected = async () => {
+    Console.WriteLine("Reconnected!");
+    await Task.Delay(1000); // This callback is a Func<Task> so async code can run here.
+};
+
+// Subscribe to a single tag. No response is sent back for this call. All responses come back
+// in another stream.
+await client.StartAsync(new TagQueryIdentifier(1));
+
+// Subscribe to multiple tags. Unlike publishing, you can't subscribe to the same tag twice.
+// Same as above, no response is sent back for this call.
+await client.StartAsync([new TagQueryIdentifier(2), new TagQueryIdentifier(3)]);
+
+var tagIds = new List<TagIdentifier>(); // Store the full IDs returned for stopping later.
+
+// Receive responses on another task to keep the main thread free for stopping, other work.
+var respondingTask = Task.Run(async () => {
+    // Responses come from the server as they're available. The same response stream sends start
+    // responses, stop responses, and current value responses. Any custom code can be ran in the
+    // arm of the following switch code.
+    await foreach (var res in client.GetResponses()) {
+        res.Switch(
+            // The result from starting 1 tag.
+            startResult => { tagIds.Add(startResult.Tag); },
+
+            // The results from starting multiple tags.
+            startResults => {
+                foreach (var r in startResults) {
+                    tagIds.Add(r.Tag);
+                }
+            },
+
+            // The result from stopping 1 tag.
+            stopResult => { },
+
+            // The results from stopping multiple tags.
+            stopResults => { },
+
+            // Values as they're available in the server's current values cache.
+            values => { });
+    }
+});
+
+// Stop current values for all tags. A single tag overload exists too.
+await client.StopAsync([.. tagIds]);
+
+await respondingTask; // Good practice to ensure all results are received.
 ```
