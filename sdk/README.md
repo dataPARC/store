@@ -21,7 +21,7 @@ Access to a nuget feed containing the dataPARC packages distributed with dataPAR
 
 With the feed configured, add a nuget reference to dataPARC.Store.SDK
 
-`dotnet add package dataPARC.Store.SDK`
+```dotnet add package dataPARC.Store.SDK```
 
 ## Examples
 
@@ -793,7 +793,7 @@ List<IDataPoint> idatapoints3 = datapoints.ToList();
 
 ### Publishing
 
-Timespan based publishing of raw and processed data. This client provides a request-response API that supports most of the options available with standard read calls: raw, aggregates by code, aggregates by name, digital text, array slicing, unit conversion, etc. A tag can be subscribed to multiple times to support different options, i.e. 1 subscription for unit converted values and 1 without, both for the same tag. Request-response in this case refers to each call returns the response for that call. For example, when starting a subscription for a tag, the start response is returned by the start method. Values are sent for each subscription on the interval defined with the subscription. Upon receiving values, the client will run the callback also defined with the subscription. For a contrasting API that offers different tradeoffs, see [Current Values](#current-values).
+Timespan based publishing of raw and processed data. This client provides a request-response API that supports most of the options available with standard read calls: raw, aggregates by code, aggregates by name, digital text, array slicing, unit conversion, etc. A tag can be subscribed to multiple times to support different options, i.e. 1 subscription for unit converted values and 1 without, both for the same tag. Request-response in this case refers to each call returns the response for that call. For example, when starting a subscription for a tag, the start response is returned by the start method. Values are sent for each subscription on the interval defined with the subscription. Upon receiving values, the client will run the callback also defined with the subscription. This client has more options than the CurrentValuesClient, but can't support as many values/second. For a contrasting API that offers different tradeoffs, see [Current Values](#current-values).
 
 ```cs
 await using var client = new PublishingClient(hostname, port, CertificateValidation.AcceptAllCertificates);
@@ -837,7 +837,7 @@ await client.StopPublishingAsync();
 
 ### Current Values
 
-Event based publishing of raw data. This client provides a stream API that supports some of the options available with standard read calls: raw, digital text, unit conversion, etc. A tag can be subscribed to multiple times to support different options, i.e. 1 subscription for raw values and 1 for numeric values, both for the same tag that has a digital text mapping defined. Stream in this case refers how requests are sent off and responses come back on an async stream. So each call does not return the response for that call. For example, when starting a subscription for a tag, the start response is not returned by the start method. Instead it is returned in the stream created by calling GetResponses. Values are sent as soon as they're available in the server's current value cache. For a contrasting API that offers different tradeoffs, see [Publishing](#publishing).
+Event based publishing of raw data. This client provides a stream API that supports some of the options available with standard read calls: raw, digital text, unit conversion, etc. A tag can be subscribed to multiple times to support different options, i.e. 1 subscription for raw values and 1 for numeric values, both for the same tag that has a digital text mapping defined. Stream in this case refers to how requests are sent off and responses come back on an async stream. So each call does not return the response for that call. For example, when starting a subscription for a tag, the start response is not returned by the start method. Instead it is returned in the stream created by calling GetResponses. Values are sent as soon as they're available in the server's current value cache. This client can support much more values/second than the PublishingClient, but has less options. For a contrasting API that offers different tradeoffs, see [Publishing](#publishing).
 
 ```cs
 await using var client = new CurrentValuesClient(hostname, port, CertificateValidation.AcceptAllCertificates);
