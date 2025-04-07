@@ -19,8 +19,7 @@ Access to a nuget feed containing the dataPARC packages distributed with dataPAR
 </configuration>
 ```
 
-With the feed configured, add a nuget reference to dataPARC.Store.SDK
-
+With the feed configured, add a package reference to the dataPARC.Store.SDK nuget package.
 ```bash
 $ dotnet add package dataPARC.Store.SDK
 ```
