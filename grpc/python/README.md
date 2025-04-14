@@ -21,7 +21,9 @@ See [https://grpc.io/docs/languages/python/](https://grpc.io/docs/languages/pyth
       |- ...
    ```
 
-   `$ python -m grpc_tools.protoc -I ./protos --python_out=. --pyi_out=. --grpc_python_out=. ./protos/*.proto`
+   ```bash
+   $ python -m grpc_tools.protoc -I ./protos --python_out=. --pyi_out=. --grpc_python_out=. ./protos/*.proto
+   ```
 
 3. Certificates
 
