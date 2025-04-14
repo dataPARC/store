@@ -10,7 +10,9 @@ See [https://grpc.io/docs/languages/python/](https://grpc.io/docs/languages/pyth
 
 1. Add python packages
 
-   `$ pip install grpcio grpcio-tools`
+   ```bash
+   $ pip install grpcio grpcio-tools
+   ```
 
 2. Generate stubs from protobuf files. Given a directory structure like so:
 
