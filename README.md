@@ -8,7 +8,7 @@ For .NET clients, go to the [sdk](https://github.com/dataPARC/store/tree/main/sd
 
 For other languages:
 - [grpc](https://github.com/dataPARC/store/tree/main/grpc): docs and examples of how to use the gRPC endpoints defined in protobuf definitions.
-- [rest](https://github.com/dataPARC/store/tree/main/rest): docs and examples of how to use the REST api.
+- [rest](https://dataparc.github.io/store/rest/): openapi docs for the REST api.
 
 ## Versions
 
