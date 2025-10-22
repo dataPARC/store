@@ -6,7 +6,9 @@ Code examples and API docs for dataPARC.Store clients.
 
 For .NET clients, go to the [sdk](https://github.com/dataPARC/store/tree/main/sdk) docs and examples of how to use the dataPARC.Store.SDK .NET library.
 
-For other languages, go to the [grpc](https://github.com/dataPARC/store/tree/main/grpc) docs and examples of how to use the gRPC endpoints defined in protobuf definitions.
+For other languages:
+- [grpc](https://github.com/dataPARC/store/tree/main/grpc): docs and examples of how to use the gRPC endpoints defined in protobuf definitions.
+- [rest](https://github.com/dataPARC/store/tree/main/rest): docs and examples of how to use the REST api.
 
 ## Versions
 
